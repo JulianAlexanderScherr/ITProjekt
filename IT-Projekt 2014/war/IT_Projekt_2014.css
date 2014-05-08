@@ -3,8 +3,9 @@ body {
     background: #f0f0f0 no-repeat !important;
 }
 
-#body_smp{
-	background: lightgray;
+#body_smp {
+    background: none repeat scroll 0 0 #D3D3D3;
+    padding: 10px;
 }
 
 #wrapper{

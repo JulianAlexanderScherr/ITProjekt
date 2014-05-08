@@ -6,10 +6,18 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
+  <servlet>
+    <servlet-name>Verwaltung</servlet-name>
+    <servlet-class>de.hdm.itprojekt.server.VerwaltungsklasseImpl</servlet-class>
+  </servlet>
   
+  <servlet-mapping>
+    <servlet-name>VerwaltungsServlet</servlet-name>
+    <url-pattern>/Social Media Pinnwand/verwaltung</url-pattern>
+  </servlet-mapping>
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>IT_Projekt_2014.html</welcome-file>
+    <welcome-file>Social Media Pinnwand.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
