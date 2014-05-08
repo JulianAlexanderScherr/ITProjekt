@@ -36,7 +36,7 @@ public class IT_Projekt_2014 implements EntryPoint {
 			.create(GreetingService.class);
 
 	/**
-	 * This is the entry point method.
+	 * This is the entry point method
 	 */
 	public void onModuleLoad() {
 		final Button sendButton = new Button("Send");
