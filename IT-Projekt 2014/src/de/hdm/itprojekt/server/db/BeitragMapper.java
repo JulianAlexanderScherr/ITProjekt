@@ -3,9 +3,8 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.server.db.DBConnection;
+import de.hdm.itprojekt.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
@@ -166,7 +165,7 @@ public class BeitragMapper {
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO beitrag (beitragID, text, erstellungszeitpunkt) "
-                + "VALUES (" + b.getBeitragID() + ",'" + b.getText() + "','"
+                + "VALUES (" + b.getBeitragID() + ",'" + b.getBeitragstext() + "','"
                 + b.getErstellungszeitpunkt() + "')");
           }
         }

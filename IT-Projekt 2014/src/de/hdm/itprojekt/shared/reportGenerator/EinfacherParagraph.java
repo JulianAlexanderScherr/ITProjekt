@@ -11,6 +11,7 @@ public void setText( String text){
 	
 }
 public String toString(){
+	return text;
 	
 }
 
