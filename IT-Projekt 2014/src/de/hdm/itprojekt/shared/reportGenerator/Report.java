@@ -1,28 +1,78 @@
 package de.hdm.itprojekt.shared.reportGenerator;
 
-public class Report {
+import java.io.Serializable;
+import java.util.Date;
+
+
+/**
+ * Basisklasse für Reports
+ * @author Stefan
+ *
+ */
+
+public class Report implements Serializable {
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Kopfdaten des Berichts
+	 */
+	
 private Paragraph kopfDaten = null;
+/**
+ * Titel des Berichts
+ */
 private String titel = "";
+/**
+ * Zeitpunkt zu dem der Bericht erstellt wurde
+ */
 private Date erstellungszeit = null;
 
-
-public Paragraph getKopfDaten(){
+/**
+ * Auslesen der KopfDaten
+ * @return
+ */
+public Paragraph getKopfDaten() {
 	return kopfDaten;
 }
-public void setKopfDaten (Paragraph kopfDaten){
-	
+/**
+ * Setzen der Kopfdaten
+ * @param kopfDaten
+ */
+public void setKopfDaten(Paragraph kopfDaten) {
+	this.kopfDaten = kopfDaten;
 }
-public String getTitel(){
+/**
+ * Auslesen des Titels
+ * @return
+ */
+public String getTitel() {
 	return titel;
 }
-public void setTitel (String titel){
-	
+/**
+ * Setzen des Titels
+ * @param titel
+ */
+public void setTitel(String titel) {
+	this.titel = titel;
 }
-public Date getErstellungszeit(){
+/**
+ * Auslesen des Erstellzeitpunktes
+ * @return
+ */
+public Date getErstellungszeit() {
 	return erstellungszeit;
 }
-public void setErstellungszeit (Date erstellungszeit){
-	
+/**
+ * Setzen des Erstellzeitpunktes
+ * @param erstellungszeit
+ */
+public void setErstellungszeit(Date erstellungszeit) {
+	this.erstellungszeit = erstellungszeit;
 }
+
+
+
 
 }
