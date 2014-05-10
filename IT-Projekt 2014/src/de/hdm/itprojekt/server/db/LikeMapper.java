@@ -3,9 +3,9 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.server.db.DBConnection;
+import de.hdm.itprojekt.server.db.DBConnectionLocal;
+import de.hdm.itprojekt.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Like</code>-Objekte auf eine relationale
@@ -165,7 +165,7 @@ public class LikeMapper {
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO like (likeID, nutzerID, erstellungszeitpunkt) "
-                + "VALUES (" + l.getLikeID() + ",'" + l.getText() + "','" + l.getNutzerID() + "','"
+                + "VALUES (" + l.getLikeID() + l.getNutzerID() + "','"
                 + l.getErstellungszeitpunkt() + "')");
           }
         }

@@ -3,9 +3,9 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.server.db.DBConnection;
+import de.hdm.itprojekt.server.db.DBConnectionLocal;
+import de.hdm.itprojekt.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Nutzer</code>-Objekte auf eine relationale
@@ -93,7 +93,7 @@ public class NutzerMapper {
   }
 
   
-  public Nutzer suchenVorname() {
+  public Nutzer suchenVorname(String vorname) {
 	    // DB-Verbindung holen
 	    Connection con = DBConnection.connection();
 
@@ -113,7 +113,7 @@ public class NutzerMapper {
 	    return null;
 	  }
   
-  public Nutzer suchenNachname() {
+  public Nutzer suchenNachname(String nachname) {
 	    // DB-Verbindung holen
 	    Connection con = DBConnection.connection();
 
@@ -134,7 +134,7 @@ public class NutzerMapper {
 	  }
   
   
-  public Nutzer suchenNickname() {
+  public Nutzer suchenNickname(String nickname) {
 	    // DB-Verbindung holen
 	    Connection con = DBConnection.connection();
 
@@ -263,7 +263,7 @@ public class NutzerMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE nutzer " + "SET vorname=\""
-              + n.getVorname() + "\", " + "nachanme=\"" + n.getNachname() + "\",  " + "nickname=\"" + n.getNickname() + "\"
+              + n.getVorname() + "\", " + "nachanme=\"" + n.getNachname() + "\",  " + "nickname=\"" + n.getNickname() 
               + "WHERE nutzerID=" + n.getNutzerID());
       
     }
@@ -272,7 +272,7 @@ public class NutzerMapper {
     }
 
     // Um Analogie zu anlegen(Nutzer n) zu wahren, geben wir n zurück
-    return ;
+    return n;
   }
 
 }

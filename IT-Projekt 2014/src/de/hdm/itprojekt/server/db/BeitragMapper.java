@@ -3,9 +3,9 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.server.db.DBConnection;
+import de.hdm.itprojekt.server.db.DBConnectionLocal;
+import de.hdm.itprojekt.shared.bo.*;;
 
 /**
  * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
@@ -116,7 +116,7 @@ public class BeitragMapper {
       while (rs.next()) {
           Beitrag b = new Beitrag();
           b.setBeitragID(rs.getInt("beitragID"));
-          b.setText(rs.getString("text"));
+          b.setBeitragstext(rs.getString("text"));
           
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(b);
@@ -166,7 +166,7 @@ public class BeitragMapper {
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO beitrag (beitragID, text, erstellungszeitpunkt) "
-                + "VALUES (" + b.getBeitragID() + ",'" + b.getText() + "','"
+                + "VALUES (" + b.getBeitragID() + ",'" + b.getBeitragstext() + "','"
                 + b.getErstellungszeitpunkt() + "')");
           }
         }
@@ -199,8 +199,8 @@ public class BeitragMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE beitrag " + "SET text=\""
-              + n.getText() "\" "
-              + "WHERE beitragID=" + n.getBeitragID());
+              + b.getBeitragstext() 
+              + "WHERE beitragID=" + b.getBeitragID());
       
     }
     catch (SQLException e2) {
@@ -208,9 +208,8 @@ public class BeitragMapper {
     }
 
     // Um Analogie zu anlegen(Beitrag b) zu wahren, geben wir n zurück
-    return ;
+    return b;
   }
-
 
 
 /**
@@ -240,7 +239,7 @@ public Beitrag liken(Like l) {
 
 	// Jetzt erst erfolgt die tatsächliche Einfügeoperation
 	        stmt.executeUpdate("INSERT INTO beitrag (likeID) "
-	            + "VALUES (" + l.getLikeID() + ")"");
+	            + "VALUES (" + l.getLikeID() ;
 	 }
     catch (SQLException e) {
       e.printStackTrace();

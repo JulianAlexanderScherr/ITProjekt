@@ -3,9 +3,9 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.server.db.DBConnection;
+import de.hdm.itprojekt.server.db.DBConnectionLocal;
+import de.hdm.itprojekt.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
@@ -116,7 +116,7 @@ public class KommentarMapper {
       while (rs.next()) {
     	  Kommentar k = new Kommentar();
           k.setKommentarID(rs.getInt("kommentarID"));
-          k.setText(rs.getString("text"));
+          k.setKommentartext(rs.getString("text"));
           
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(k);
@@ -199,7 +199,7 @@ public class KommentarMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE kommentar " + "SET text=\""
-              + n.getText() "\" "
+              + k.getKommentartext()
               + "WHERE kommentarID=" + k.getKommentarID());
       
     }
@@ -208,7 +208,7 @@ public class KommentarMapper {
     }
 
     // Um Analogie zu anlegen(Kommentar k) zu wahren, geben wir n zurück
-    return ;
+    return k;
   }
 
 
