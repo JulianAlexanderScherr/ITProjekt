@@ -3,9 +3,7 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.shared.bo.Kommentar;
 
 /**
  * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
@@ -79,8 +77,9 @@ public class KommentarMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
         Kommentar k = new Kommentar();
-        k.setId(rs.getInt("id"));
-        k.setKommentarID(rs.getInt("kommentar"));
+        k.setId(rs.getInt("kommentarID"));
+        k.setNutzerID(rs.getInt("nutzerID"));
+        k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
         return k;
       }
     }
@@ -115,8 +114,10 @@ public class KommentarMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
       while (rs.next()) {
     	  Kommentar k = new Kommentar();
-          k.setKommentarID(rs.getInt("kommentarID"));
-          k.setText(rs.getString("text"));
+          k.setId(rs.getInt("kommentarID"));
+          k.setNutzerID(rs.getInt("nutzerID"));
+          k.setKommentartext(rs.getString("text"));
+          k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
           
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(k);
@@ -160,13 +161,13 @@ public class KommentarMapper {
              * k erhält den bisher maximalen, nun um 1 inkrementierten
              * Primärschlüssel.
              */
-            k.setKommentarID(rs.getInt("maxid") + 1);
+            k.setId(rs.getInt("maxid") + 1);
 
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO kommentar (KommentarID, nutzerID, text, erstellungszeitpunkt) "
-                + "VALUES (" + k.getKommentarID() + ",'" + k.getText() + "','" + k.getNutzerID() + "','"
+                + "VALUES (" + k.getId() + ",'" + k.getKommentartext() + "','" + k.getNutzerID() + "','"
                 + k.getErstellungszeitpunkt() + "')");
           }
         }
@@ -199,8 +200,8 @@ public class KommentarMapper {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE kommentar " + "SET text=\""
-              + n.getText() "\" "
-              + "WHERE kommentarID=" + k.getKommentarID());
+              + k.getKommentartext()
+              + "WHERE kommentarID=" + k.getId());
       
     }
     catch (SQLException e2) {
@@ -208,7 +209,7 @@ public class KommentarMapper {
     }
 
     // Um Analogie zu anlegen(Kommentar k) zu wahren, geben wir n zurück
-    return ;
+    return k;
   }
 
 

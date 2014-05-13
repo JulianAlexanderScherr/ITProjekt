@@ -28,6 +28,12 @@ import de.hdm.itprojekt.shared.bo.Pinnwand;
 public class VerwaltungsklasseImpl extends RemoteServiceServlet
 implements Verwaltungsklasse{
 	
+	/**
+	 * serialVersionUID wird benötigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
+	 * </br>weitere Informationen zu Serializable siehe <a href="http://www.zdnet.de/39154667/wissenswertes-zur-serialisierung-von-java-objekten/">Link</a>
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private NutzerMapper nMapper = null;
 	
 	private BeitragMapper bMapper = null;
@@ -147,10 +153,11 @@ implements Verwaltungsklasse{
 		return null;
 	}
 
-	@Override
+	/**
+	 * 
+	 */
 	public Nutzer getNutzerByID(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return nMapper.suchenID(id);
 	}
 
 	@Override

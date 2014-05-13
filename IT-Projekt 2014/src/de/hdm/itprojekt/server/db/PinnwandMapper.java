@@ -3,9 +3,8 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.shared.bo.Pinnwand;
+
 
 /**
  * Mapper-Klasse, die <code>Pinnwand</code>-Objekte auf eine relationale
@@ -79,8 +78,7 @@ public class PinnwandMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
         Pinnwand p = new Pinnwand();
-        p.setId(rs.getInt("id"));
-        p.setPinnwandID(rs.getInt("pinnwand"));
+        p.setId(rs.getInt("pinnwandID"));
         return p;
       }
     }
@@ -123,13 +121,13 @@ public class PinnwandMapper {
              * c erhält den bisher maximalen, nun um 1 inkrementierten
              * Primärschlüssel.
              */
-            p.setPinnwandID(rs.getInt("maxid") + 1);
+            p.setId(rs.getInt("PinnwandID") + 1);
 
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO pinnwand (pinnwandID) "
-                + "VALUES (" + p.getPinnwandID() + ")");
+                + "VALUES (" + p.getId() + ")");
           }
         }
         catch (SQLException e) {

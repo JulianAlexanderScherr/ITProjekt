@@ -3,9 +3,11 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.shared.bo.Like;
+
+
+
+
 
 /**
  * Mapper-Klasse, die <code>Like</code>-Objekte auf eine relationale
@@ -79,8 +81,9 @@ public class LikeMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
     	Like l = new Like();
-        l.setId(rs.getInt("id"));
-        l.setLikeID(rs.getInt("like"));
+        l.setId(rs.getInt("likeID"));
+        l.setNutzerID(rs.getInt("nutzerID"));
+        l.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
         return l;
       }
     }
@@ -115,7 +118,7 @@ public class LikeMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Like-Objekt erstellt.
       while (rs.next()) {
     	  Like l = new Like();
-          l.setLikeID(rs.getInt("likeID"));
+          l.setId(rs.getInt("likeID"));
           
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(l);
@@ -159,13 +162,13 @@ public class LikeMapper {
              * l erhält den bisher maximalen, nun um 1 inkrementierten
              * Primärschlüssel.
              */
-            l.setLikeID(rs.getInt("maxid") + 1);
+            l.setId(rs.getInt("maxid") + 1);
 
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO like (likeID, nutzerID, erstellungszeitpunkt) "
-                + "VALUES (" + l.getLikeID() + ",'" + l.getText() + "','" + l.getNutzerID() + "','"
+                + "VALUES (" + l.getId() + "','" + l.getNutzerID() + "','"
                 + l.getErstellungszeitpunkt() + "')");
           }
         }
