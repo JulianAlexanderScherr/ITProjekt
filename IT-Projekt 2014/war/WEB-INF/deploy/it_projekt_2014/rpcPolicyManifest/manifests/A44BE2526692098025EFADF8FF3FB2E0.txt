@@ -1,0 +1,2 @@
+serviceClass: de.hdm.itprojekt.client.GreetingService
+path: 72BFF84BB30B8AE6DFF0D28C1328C5A7.gwt.rpc

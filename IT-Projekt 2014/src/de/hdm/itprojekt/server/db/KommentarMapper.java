@@ -60,7 +60,7 @@ public class KommentarMapper {
    */
   public Kommentar suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -100,7 +100,7 @@ public class KommentarMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Kommentar> suchenAlle() {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Kommentar> result = new Vector<Kommentar>();
@@ -143,7 +143,7 @@ public class KommentarMapper {
    */
   
   public Kommentar anlegen(Kommentar k) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -194,7 +194,7 @@ public class KommentarMapper {
    * @return das als Parameter übergebene Objekt
    */
   public Kommentar aendern(Kommentar k) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       Statement stmt = con.createStatement();
@@ -220,7 +220,7 @@ public class KommentarMapper {
  * @param k das aus der DB zu löschende "Objekt"
  */
 public void entfernen(Kommentar k) {
-  Connection con = DBConnection.connection();
+  Connection con = DBConnectionLocal.connection();
 
   try {
     Statement stmt = con.createStatement();

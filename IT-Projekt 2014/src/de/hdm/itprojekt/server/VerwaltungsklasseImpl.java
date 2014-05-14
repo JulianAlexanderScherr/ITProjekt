@@ -158,6 +158,7 @@ implements Verwaltungsklasse{
 	 */
 	public Nutzer getNutzerByID(int id) throws IllegalArgumentException {
 		return nMapper.suchenID(id);
+		
 	}
 
 	@Override

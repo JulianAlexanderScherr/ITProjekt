@@ -64,7 +64,7 @@ public class LikeMapper {
    */
   public Like suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -104,7 +104,7 @@ public class LikeMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Like> suchenAlle() {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Like> result = new Vector<Like>();
@@ -144,7 +144,7 @@ public class LikeMapper {
    */
   
   public Like anlegen(Like l) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -195,7 +195,7 @@ public class LikeMapper {
  * @param l das aus der DB zu löschende "Objekt"
  */
 public void entfernen(Like l) {
-  Connection con = DBConnection.connection();
+  Connection con = DBConnectionLocal.connection();
 
   try {
     Statement stmt = con.createStatement();

@@ -38,7 +38,7 @@ public class DBConnection {
 	 * mitgegeben, um bei einer Veränderung dieser URL nicht die gesamte 
 	 * Software neu komilieren zu müssen.
 	 */
-	private static String url = "jdbc:google:rdbms://prof-thies.de:thies-bankproject:thies-bankproject/bankproject?user=demo&password=demo";
+	private static String url = "";
 	
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch 

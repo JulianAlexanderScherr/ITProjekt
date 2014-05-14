@@ -1,7 +1,9 @@
 package de.hdm.itprojekt.client;
 
 
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -9,140 +11,118 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
 import de.hdm.itprojekt.shared.VerwaltungsklasseAsync;
 import de.hdm.itprojekt.shared.bo.Nutzer;
 
-
-
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class IT_Projekt_2014 implements EntryPoint {
-
 		//Anlegen der erforderlichen Panel
 		private VerticalPanel basisPanel = new VerticalPanel();
-		private FlowPanel menueLeiste = new FlowPanel();
+		private HorizontalPanel menuePanel = new HorizontalPanel();
 		private HorizontalPanel funktionenPanel = new HorizontalPanel();	
-		//Anlegen der erforderlichen Button
-		private Button pinnwandButton = new Button("Pinnwand");
-		private Button reportButton = new Button("Reports");
-		private Button sucheButton = new Button("Suche");	
+		private VerticalPanel verwaltungsPanel = new VerticalPanel();
+		private VerticalPanel beitragsPanel = new VerticalPanel();
+		private HorizontalPanel suchenPanel = new HorizontalPanel();	
+		private HorizontalPanel pinnwand_head = new HorizontalPanel();
 		
+		//Anlegen der erforderlichen Buttons
+		private Button pinnwandButton = new Button("zur Pinnwand");
+		private Button reportButton = new Button("Reportgenerator");
+		private Button eigenePinnwand = new Button("Eigene Pinnwand");
+		private Button neuerBeitrag = new Button("+ neuen Beitrag erstellen");
 		
-		
-		//reportFunktionsPanel: Panel für Report Erstellung
-		//Anlegen der erforderlichen Panel
-		private VerticalPanel reportFunktionsPanel = new VerticalPanel();
-		private HorizontalPanel reportPanel =new HorizontalPanel();
-		private VerticalPanel menuePanel = new VerticalPanel();	
-		//Anlegen der erforderlichen Label
-		private Label reportLabel = new Label("Report");
-		private Label informationLabel = new Label("Information");
-		private Label sortierenNachLabel = new Label("sortieren nach");
-		private Label vonLabel = new Label("von");
-		private Label bisLabel = new Label("bis");	
-		private Label reportAusgabeLabel = new Label("Testreport 1 \nTestreport 2 \nTestreport 3 \nusw....................................");
-		//Anlegen der erforderlichen ListBox
-		private ListBox suchObjekt = new ListBox();
-		private ListBox sortierenNach = new ListBox();
-		//Anlegen der erfordelrichen DatePicker
-		private DatePicker startDatum = new DatePicker();
-		private DatePicker endeDatum = new DatePicker();
+		//Anlegen der erforderlichen Widgets
+		private TextBox suchFeld = new TextBox();
+		private Label abonnenten = new Label("Abonnenten");
+		private Label pinnwand = new Label("Pinnwand");
+		private Label pinnwandVon = new Label("Meine persoenliche Pinnwand");
+		private DatePicker datePicker = new DatePicker();
 		
 		
 		//
-		private Label nutzerAusDB = new Label();
+		private Label nutzerAusDB = new Label("ERROR");
+		VerwaltungsklasseAsync verwaltung = null;
 		
 	public void onModuleLoad() {
 		
-		
-		// Associate the Main panel with the HTML host page.
 		RootPanel.get("body_smp").add(basisPanel);
 		
-		//basisPanel: Aufbau der GUI
 		//BasisPanel 		
 		basisPanel.addStyleName("basisPanel");
-		basisPanel.add(menueLeiste);
+		basisPanel.add(menuePanel);
 		basisPanel.add(funktionenPanel);
-		basisPanel.add(reportFunktionsPanel);
-		//menueLeiste		
-		menueLeiste.add(pinnwandButton);
-		menueLeiste.add(reportButton);
-		menueLeiste.add(sucheButton);		
-		//FunktionenPanel			
-		funktionenPanel.addStyleName("funktionenPanel");
-		
-		
-		//reportPanel: Aufbau der GUI
-		//reportFunktionsPanel
-		reportFunktionsPanel.add(reportLabel);
-		reportFunktionsPanel.add(reportPanel);
-		//reportPanel
-		reportPanel.add(menuePanel);
-		reportPanel.add(reportAusgabeLabel);		
+
 		//menuePanel
-		//menuePanel:suchObjekt+sortierenNach: ListBox befüllen und sichtbar machen
-		suchObjekt.addItem("User");
-		suchObjekt.addItem("Likes");
-		suchObjekt.addItem("Pinnwand");
-		suchObjekt.setVisibleItemCount(1);
+		menuePanel.addStyleName("menue");
+		menuePanel.add(pinnwandButton);
+		menuePanel.add(reportButton);
 		
-		sortierenNach.addItem("Monat");
-		sortierenNach.addItem("User");
-		sortierenNach.addItem("Anzahl");
-		sortierenNach.setVisibleItemCount(1);
-				
-		menuePanel.add(informationLabel);
-		menuePanel.add(suchObjekt);
-		menuePanel.add(sortierenNachLabel);
-		menuePanel.add(sortierenNach);
-		menuePanel.add(vonLabel);
-		menuePanel.add(startDatum);
-		menuePanel.add(bisLabel);
-		menuePanel.add(endeDatum);
+		//funktionenPanel	
+		funktionenPanel.addStyleName("funktionenPanel");
+		funktionenPanel.add(verwaltungsPanel);
+		funktionenPanel.add(beitragsPanel);
+		
+		//verwaltungsPanel
+		verwaltungsPanel.addStyleName("verwaltungsPanel");
+		abonnenten.addStyleName("section_abonnenten");
+		verwaltungsPanel.add(abonnenten);
+		verwaltungsPanel.add(suchenPanel);
+		verwaltungsPanel.add(datePicker);
+
 		
 		
+		//suchPanel
+		suchenPanel.addStyleName("suchenPanel");
+		suchenPanel.add(eigenePinnwand);
+		suchFeld.setValue(" Abonnenten suchen...");
+		suchenPanel.add(suchFeld);
 		
-		//
-		VerwaltungsklasseAsync verwaltung = ClientsideSettings.getVerwaltung();
-		verwaltung.getNutzerByID(2, new AsyncCallback<Nutzer>(){
+		//beitragsPanel
+		beitragsPanel.addStyleName("beitragsPanel");
+		pinnwand.addStyleName("section_pinnwand");
+		pinnwandVon.addStyleName("head_text");
+		beitragsPanel.add(pinnwand);
+		beitragsPanel.add(pinnwand_head);
+		
+		
+		//pinnwand_head
+		pinnwand_head.setWidth("100%");
+		pinnwand_head.add(pinnwandVon);
+		neuerBeitrag.addStyleName("neuerBeitrag");
+		pinnwand_head.add(neuerBeitrag);
+		
+		
+		
+		
+		//		
+		if (verwaltung == null) {
+			verwaltung = ClientsideSettings.getVerwaltung();
+		}
+		
+
+		verwaltung.getNutzerByID(1, new AsyncCallback<Nutzer>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
-				System.out.println("ERROR");
+				beitragsPanel.add(nutzerAusDB);
 			}
 
 			@Override
 			public void onSuccess(Nutzer result) {
-				System.out.println("SUCCESS");
-				nutzerAusDB.setText("AAAA");
+				nutzerAusDB.setText(result.getVorname() + " " + result.getNachname());
+				beitragsPanel.add(nutzerAusDB);
 			}
 			
 			});
 		
 		
-		menuePanel.add(nutzerAusDB);
+		
 	}
 	
-	class SetVerwaltungCallback implements AsyncCallback<Void> {
-
-	    @Override
-	    public void onFailure(Throwable caught) {
-	      /*
-	       * Wenn ein Fehler auftritt, dann geben wir eine kurze Log Message aus.
-	       */
-	      ClientsideSettings.getLogger().severe("Fehlgeschlagen!");
-	    }
-
-	    @Override
-	    public void onSuccess(Void result) {
-	      /*
-	       * Wir erwarten diesen Ausgang, wollen aber keine Notifikation ausgeben.
-	       */
-	    }
-
-	  }
 }

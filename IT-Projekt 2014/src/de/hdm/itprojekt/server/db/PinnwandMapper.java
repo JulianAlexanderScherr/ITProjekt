@@ -61,7 +61,7 @@ public class PinnwandMapper {
    */
   public Pinnwand suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -103,7 +103,7 @@ public class PinnwandMapper {
    */
   
   public Pinnwand anlegen(Pinnwand p) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
         try {
           Statement stmt = con.createStatement();
