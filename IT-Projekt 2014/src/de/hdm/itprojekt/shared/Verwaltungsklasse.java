@@ -223,4 +223,5 @@ public interface Verwaltungsklasse extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Like getLike(int id) throws IllegalArgumentException;
+
 }

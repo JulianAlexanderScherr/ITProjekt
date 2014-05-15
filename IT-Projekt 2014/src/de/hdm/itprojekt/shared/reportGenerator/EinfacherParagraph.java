@@ -11,7 +11,7 @@ public class EinfacherParagraph extends Paragraph implements Serializable {
 
 
 
-/**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -74,12 +74,7 @@ public void setText( String text){
  */
 
 public String toString(){
-<<<<<<< HEAD
 	return this.text;
-=======
-	return text;
-	
->>>>>>> refs/remotes/origin/MartinSchwab
 }
 
 }

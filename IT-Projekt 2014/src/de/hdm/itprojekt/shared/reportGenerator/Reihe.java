@@ -14,12 +14,15 @@ public void loeschenZeile( Zeile z){
 	
 }
 public Vector<Zeile> getZeile(){
+	return null;
 	//return??
 }
 public int anzahlZeilen(){
+	return 0;
 	//return??
 }
 public Zeile getZeileAt(int i){
+	return null;
 	//return???
 }
 

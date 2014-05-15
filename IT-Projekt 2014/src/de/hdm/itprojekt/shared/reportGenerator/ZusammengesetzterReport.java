@@ -3,7 +3,6 @@ package de.hdm.itprojekt.shared.reportGenerator;
 import java.util.Vector;
 import java.io.Serializable;
 
-import reportGenerator.Reihe;
 
 /**
  * Klasse ermöglicht das Zusammenstellen eines Reports der aus mehreren Teilreports besteht.

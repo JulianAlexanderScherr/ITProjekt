@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
-import de.hdm.thies.bankProjekt.shared.report.SimpleParagraph;
 /**
  * In dieser Klasse werden einzelne Abschnitte in einer Vectorliste abgelegt und Bilden
  * so gemeinsam einen größeren Abschnitt. In diesem sind die Abschnitte dann als <code>unterparagraphen</code> 
