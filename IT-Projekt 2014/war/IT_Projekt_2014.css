@@ -68,19 +68,29 @@ body {
     margin-left: 380px;
     margin-top: -83px;
     position: fixed;
-    width: 310px;
+    width: 500px;
 }
 
-.menue td .gwt-Button{
+.menue td .gwt-Button, .menue a.logout{
 	background: none;
 	border: none;
 	color: #fff;
 	text-transform: uppercase;
+	margin-right: -95px;
+	padding: 5px 7px;
+	border-radius: 3px;
 }
 
-.menue td .gwt-Button:hover{
+.menue a.logout {
+    margin-left: -160px;
+    position: absolute;
+    margin-top: 1px;
+}
+
+.menue td .gwt-Button:hover, .menue a.logout:hover{
 	background: #fff;
 	color: #32849B;
+	text-decoration: none;
 }
 
 .verwaltungsPanel {
@@ -104,10 +114,11 @@ body {
 }
 
 .verwaltungsPanel .gwt-TextBox {
-    margin-left: 20px;
-    padding: 2px 0;
-    width: 150px;
-    color: #aaa;
+    border-radius: 3px;
+    margin-left: 10px;
+    margin-top: -4px;
+    padding: 4px 5px;
+    width: 193px;
 }
 
 #footer {
@@ -128,6 +139,27 @@ h1 {
 .sendButton {
   display: block;
   font-size: 16pt;
+}
+
+.suchenPanel .gwt-SuggestBox {
+    margin-left: 10px;
+    margin-top: -4px;
+    width: 195px;
+}
+
+.gwt-ListBox {
+    border: medium none;
+    margin-top: 20px;
+    width: 303px;
+}
+
+.gwt-ListBox option {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.gwt-ListBox option.active {
+    background: red;
 }
 
 /** Most GWT widgets already have a style name defined */

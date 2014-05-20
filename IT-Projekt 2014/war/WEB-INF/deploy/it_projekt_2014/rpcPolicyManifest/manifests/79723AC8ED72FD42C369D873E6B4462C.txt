@@ -1,0 +1,2 @@
+serviceClass: de.hdm.itprojekt.client.LoginService
+path: 34A14A23A1CC0D239FA204388C6AD9AA.gwt.rpc

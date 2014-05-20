@@ -1,2 +1,0 @@
-serviceClass: de.hdm.itprojekt.shared.Verwaltungsklasse
-path: 8A911D744E69C82F9B074E58C7878325.gwt.rpc

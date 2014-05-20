@@ -1,19 +1,16 @@
 package de.hdm.itprojekt.client;
 
-
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.user.client.ui.Anchor;
 
 import de.hdm.itprojekt.shared.VerwaltungsklasseAsync;
 import de.hdm.itprojekt.shared.bo.Nutzer;
@@ -22,107 +19,121 @@ import de.hdm.itprojekt.shared.bo.Nutzer;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class IT_Projekt_2014 implements EntryPoint {
+	
 		//Anlegen der erforderlichen Panel
 		private VerticalPanel basisPanel = new VerticalPanel();
-		private HorizontalPanel menuePanel = new HorizontalPanel();
-		private HorizontalPanel funktionenPanel = new HorizontalPanel();	
-		private VerticalPanel verwaltungsPanel = new VerticalPanel();
-		private VerticalPanel beitragsPanel = new VerticalPanel();
-		private HorizontalPanel suchenPanel = new HorizontalPanel();	
-		private HorizontalPanel pinnwand_head = new HorizontalPanel();
+		private HorizontalPanel menuePanel = new HorizontalPanel();	
+		private VerticalPanel funktionenPanel = new VerticalPanel();
+		
 		
 		//Anlegen der erforderlichen Buttons
 		private Button pinnwandButton = new Button("zur Pinnwand");
 		private Button reportButton = new Button("Reportgenerator");
-		private Button eigenePinnwand = new Button("Eigene Pinnwand");
-		private Button neuerBeitrag = new Button("+ neuen Beitrag erstellen");
-		
-		//Anlegen der erforderlichen Widgets
-		private TextBox suchFeld = new TextBox();
-		private Label abonnenten = new Label("Abonnenten");
-		private Label pinnwand = new Label("Pinnwand");
-		private Label pinnwandVon = new Label("Meine persoenliche Pinnwand");
-		private DatePicker datePicker = new DatePicker();
-		
 		
 		//
-		private Label nutzerAusDB = new Label("ERROR");
 		VerwaltungsklasseAsync verwaltung = null;
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		
+		private LoginInfo loginInfo = null;
+		private VerticalPanel loginPanel = new VerticalPanel();
+		private Label loginLabel = new Label("Please sign in to your Google Account to access the StockWatcher application.");
+		private Anchor signInLink = new Anchor("Sign In");
+		private Anchor signOutLink = new Anchor("Sign Out");
 		
 	public void onModuleLoad() {
 		
 		RootPanel.get("body_smp").add(basisPanel);
 		
+		
 		//BasisPanel 		
 		basisPanel.addStyleName("basisPanel");
 		basisPanel.add(menuePanel);
+		basisPanel.add(loginPanel);
 		basisPanel.add(funktionenPanel);
+		
+		
+		reportButton.addClickHandler(new ClickHandler() {
 
-		//menuePanel
-		menuePanel.addStyleName("menue");
-		menuePanel.add(pinnwandButton);
-		menuePanel.add(reportButton);
+			public void onClick(ClickEvent event) {
+				
+				System.out.println("test");
+				//Erstellen der erforderlichen Instanz
+				ReportGui rg = new ReportGui();
+				
+				funktionenPanel.clear();
+				
+				funktionenPanel.add(rg);
+				
+			}
+		});
 		
-		//funktionenPanel	
-		funktionenPanel.addStyleName("funktionenPanel");
-		funktionenPanel.add(verwaltungsPanel);
-		funktionenPanel.add(beitragsPanel);
-		
-		//verwaltungsPanel
-		verwaltungsPanel.addStyleName("verwaltungsPanel");
-		abonnenten.addStyleName("section_abonnenten");
-		verwaltungsPanel.add(abonnenten);
-		verwaltungsPanel.add(suchenPanel);
-		verwaltungsPanel.add(datePicker);
+		pinnwandButton.addClickHandler(new ClickHandler() {
 
+			public void onClick(ClickEvent event) {
+				
+				System.out.println("test");
+				//Erstellen der erforderlichen Instanz
+				PinnwandGui pg = new PinnwandGui();
+				funktionenPanel.clear();
+				funktionenPanel.add(pg);
+			}
+		});	
 		
-		
-		//suchPanel
-		suchenPanel.addStyleName("suchenPanel");
-		suchenPanel.add(eigenePinnwand);
-		suchFeld.setValue(" Abonnenten suchen...");
-		suchenPanel.add(suchFeld);
-		
-		//beitragsPanel
-		beitragsPanel.addStyleName("beitragsPanel");
-		pinnwand.addStyleName("section_pinnwand");
-		pinnwandVon.addStyleName("head_text");
-		beitragsPanel.add(pinnwand);
-		beitragsPanel.add(pinnwand_head);
-		
-		
-		//pinnwand_head
-		pinnwand_head.setWidth("100%");
-		pinnwand_head.add(pinnwandVon);
-		neuerBeitrag.addStyleName("neuerBeitrag");
-		pinnwand_head.add(neuerBeitrag);
-		
-		
-		
-		
-		//		
-		if (verwaltung == null) {
-			verwaltung = ClientsideSettings.getVerwaltung();
+		// Check login status using login service.
+		    LoginServiceAsync loginService = GWT.create(LoginService.class);
+		    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+		      public void onFailure(Throwable error) {
+		      }
+
+		      public void onSuccess(LoginInfo result) {
+		        loginInfo = result;
+		        if(loginInfo.isLoggedIn()) {
+		        	//menuePanel
+					menuePanel.addStyleName("menue");
+					menuePanel.add(pinnwandButton);
+					menuePanel.add(reportButton);
+					
+		        	PinnwandGui pg = new PinnwandGui();
+					funktionenPanel.clear();
+					funktionenPanel.add(pg);
+					
+					signOutLink.setHref(loginInfo.getLogoutUrl());
+					signOutLink.setStyleName("logout");
+					menuePanel.add(signOutLink);
+		        } else {
+		          loadLogin();
+		        }
+		      }
+		    });
+		    
+		    
+		    AsyncCallback<LoginInfo> acb = new AsyncCallback<LoginInfo>() {
+				public void onFailure(Throwable error) {
+				}
+	 
+				public void onSuccess(LoginInfo result) {
+					loginInfo = result;
+					if (loginInfo.isLoggedIn()) {
+						System.out.println("Logged in");
+			        	PinnwandGui pg = new PinnwandGui();
+						funktionenPanel.clear();
+						funktionenPanel.add(pg);
+					} else {
+						loadLogin();
+					}
+				}
+			};
+			loginService.login(GWT.getHostPageBaseURL(), acb);
+
 		}
+	
+	 private void loadLogin() {
+		    // Assemble login panel.
+		    signInLink.setHref(loginInfo.getLoginUrl());
+		    loginPanel.add(loginLabel);
+		    loginPanel.add(signInLink);
 		
-
-		verwaltung.getNutzerByID(1, new AsyncCallback<Nutzer>(){
-
-			@Override
-			public void onFailure(Throwable caught) {
-				beitragsPanel.add(nutzerAusDB);
-			}
-
-			@Override
-			public void onSuccess(Nutzer result) {
-				nutzerAusDB.setText(result.getVorname() + " " + result.getNachname());
-				beitragsPanel.add(nutzerAusDB);
-			}
-			
-			});
-		
-		
-		
-	}
+		  }
 	
 }
+

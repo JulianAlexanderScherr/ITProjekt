@@ -1,2 +1,0 @@
-# Module it_projekt_2014
-# RPC service class, partial path of RPC policy file

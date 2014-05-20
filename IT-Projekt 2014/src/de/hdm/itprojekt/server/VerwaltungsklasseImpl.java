@@ -117,8 +117,7 @@ implements Verwaltungsklasse{
 
 	@Override
 	public Vector<Nutzer> getAlleNutzer() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.nMapper.suchenAlle();
 	}
 
 	@Override
@@ -169,10 +168,8 @@ implements Verwaltungsklasse{
 	}
 
 	@Override
-	public Vector<Nutzer> getNutzerByVorname(String vorname)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+	public Vector<Nutzer> getNutzerByVorname(String vorname) throws IllegalArgumentException {
+		return this.nMapper.suchenVorname(vorname);
 	}
 
 	@Override

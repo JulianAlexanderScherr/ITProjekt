@@ -95,34 +95,36 @@ public class NutzerMapper {
   }
 
   
-  public Nutzer suchenVorname(String vorname) {
+  public Vector<Nutzer> suchenVorname(String vorname) {
 	    // DB-Verbindung holen
 	    Connection con = DBConnectionLocal.connection();
 
+	    // Ergebnisvektor vorbereiten
+	    Vector<Nutzer> result = new Vector<Nutzer>();
+	    
 	    try {
 	      // Leeres SQL-Statement (JDBC) anlegen
 	      Statement stmt = con.createStatement();
 
 	      // Statement ausfüllen und als Query an die DB schicken
-	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname FROM nutzer "
-	              + "WHERE vorname= " + vorname );
-	      
-	      if (rs.next()) {
+	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname " + "FROM nutzer "
+	              + "WHERE vorname LIKE '%" + vorname + "%' ORDER BY vorname");
+
+	      while (rs.next()) {
 	          // Ergebnis-Tupel in Objekt umwandeln
 	          Nutzer n = new Nutzer();
 	          n.setId(rs.getInt("nutzerID"));
 	          n.setVorname(rs.getString("vorname"));
 	          n.setNachname(rs.getString("nachname"));
 	          n.setNickname(rs.getString("nickname"));
-	          return n;
-	        }
+	          result.addElement(n);
+	      }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	      return null;
 	    }
-
-	    return null;
+	    return result;
 	  }
   
   public Nutzer suchenNachname(String nachname) {

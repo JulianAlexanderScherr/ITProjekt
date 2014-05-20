@@ -2,6 +2,15 @@
 
   <!-- Servlets -->
   <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>de.hdm.itprojekt.server.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/it_projekt_2014/login</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>verwaltungServlet</servlet-name>
     <servlet-class>de.hdm.itprojekt.server.VerwaltungsklasseImpl</servlet-class>
   </servlet>
