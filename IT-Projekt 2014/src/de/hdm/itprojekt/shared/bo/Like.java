@@ -23,6 +23,11 @@ public class Like extends BusinessObject {
 	private int nutzerID = 0;
 	
 	/**
+	 * Fremdschlüsselbeziehung zu Beiträgen
+	 */
+	private int beitragID = 0;
+	
+	/**
 	 * Auslesen des Fremdschlüssels der Nutzer
 	 * @return nutzerID
 	 */
@@ -30,12 +35,27 @@ public class Like extends BusinessObject {
 		return nutzerID;
 	}
 
-	
 	/**
 	 * Setzen des Fremdschlüssels der Nutzer
 	 * @param nutzerID
 	 */
 	public void setNutzerID(int nutzerID) {
 		this.nutzerID = nutzerID;
+	}
+
+	/**
+	 * Auslesen des Fremdschlüssels der Beiträge
+	 * @return nutzerID
+	 */
+	public int getBeitragID() {
+		return beitragID;
+	}
+
+	/**
+	 * Setzen des Fremdschlüssels der Beiträge
+	 * @param nutzerID
+	 */
+	public void setBeitragID(int beitragID) {
+		this.beitragID = beitragID;
 	}
 }

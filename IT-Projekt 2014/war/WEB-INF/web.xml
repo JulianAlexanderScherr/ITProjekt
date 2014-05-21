@@ -22,11 +22,11 @@
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Social Media Pinnwand.html</welcome-file>
+    <welcome-file>IT_Projekt_2014.html</welcome-file>
   </welcome-file-list>
 
   <servlet>
-    <servlet-name>SystemServiceServlet</servlet-name>
+    <servlet-name>systemServiceServlet</servlet-name>
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
     <init-param>
       <param-name>services</param-name>
@@ -35,7 +35,7 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>SystemServiceServlet</servlet-name>
+    <servlet-name>systemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
 

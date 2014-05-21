@@ -105,7 +105,7 @@ public interface Verwaltungsklasse extends RemoteService{
 	 * @param nutzer
 	 * @throws IllegalArgumentException
 	 */
-	public void unlikeBeitrag(Beitrag beitrag, Nutzer nutzer) throws IllegalArgumentException;
+	public void unlikeBeitrag(Like like) throws IllegalArgumentException;
 	
 	
 	/**
@@ -139,15 +139,6 @@ public interface Verwaltungsklasse extends RemoteService{
 	 */
 	public Vector<Abonnement> getAlleAbonnenten() throws IllegalArgumentException; 
 	
-	
-	/**
-	 * Auslesen aller Businessobjekte. Zurückgegeben wird ein Vector der alle Inhalte der Datenbank enthält
-	 * @return
-	 * @throws IllegalArgumentException
-	 */
-	public Vector<BusinessObject> getAlleBusinessObjects() throws IllegalArgumentException;
-	
-	
 	/**
 	 * Auslesen eines einzelnen Beitrag. Zurückgegeben wird das Beitrags Objekt
 	 * @param id
@@ -155,7 +146,6 @@ public interface Verwaltungsklasse extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Beitrag getBeitrag(int id) throws IllegalArgumentException;
-	
 	
 	/**
 	 * Ausgeben eines Nutzers anhand dessen ID

@@ -22,7 +22,7 @@ import de.hdm.itprojekt.shared.bo.Pinnwand;
 
 /**
  * Das ist die eigentliche Applikationslogik... hier wird verknüpft und dargestellt !!!!
- * @author Schwab
+ * @author Thies, Schwab
  *
  */
 public class VerwaltungsklasseImpl extends RemoteServiceServlet
@@ -33,19 +33,79 @@ implements Verwaltungsklasse{
 	 * </br>weitere Informationen zu Serializable siehe <a href="http://www.zdnet.de/39154667/wissenswertes-zur-serialisierung-von-java-objekten/">Link</a>
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * Referenz auf den DatenbankMapper, der Nutzerobjekte mit der Datenbank
+	 * abgleicht.
+	 */
 	private NutzerMapper nMapper = null;
 	
+	/**
+	 * Referenz auf den DatenbankMapper, der Beitragsobjekte mit der Datenbank
+	 * abgleicht.
+	 */
 	private BeitragMapper bMapper = null;
 	
+	/**
+	 * Referenz auf den DatenbankMapper, der Kommentarobjekte mit der Datenbank
+	 * abgleicht.
+	 */
 	private KommentarMapper kMapper = null;
 	
+	/**
+	 * Referenz auf den DatenbankMapper, der Abonnementobjekte mit der Datenbank
+	 * abgleicht.
+	 */
 	private AbonnementMapper aMapper = null;
 	
+	/**
+	 * Referenz auf den DatenbankMapper, der Likeobjekte mit der Datenbank
+	 * abgleicht.
+	 */
 	private LikeMapper lMapper = null;
 	
+	/**
+	 * Referenz auf den DatenbankMapper, der Pinnwandobjekte mit der Datenbank
+	 * abgleicht.
+	 */
 	private PinnwandMapper pMapper = null;
 	
+	
+	
+    /*
+     * ***********************************
+     * Abschnitt: Initialisierung
+     */
+	
+	/**
+     * <p>Ein <code>RemoteServiceServlet</code> wird unter GWT mittels
+     * <code>GWT.create(Klassenname.class)</code> Client-seitig erzeugt. Hierzu
+     * ist ein solcher No-Argument-Konstruktor anzulegen. Ein Aufruf eines anderen
+     * Konstruktors ist durch die Client-seitige Instantiierung durch
+     * <code>GWT.create(Klassenname.class)</code> nach derzeitigem Stand nicht
+     * möglich.
+     * </p>
+     * <p>
+     * Es bietet sich also an, eine separate Instanzenmethode zu erstellen, die
+     * Client-seitig direkt nach <code>GWT.create(Klassenname.class)</code>
+     * aufgerufen wird, um eine Initialisierung der Instanz vorzunehmen.
+     * </p>
+     * 
+     * @see #init()
+	 * @throws IllegalArgumentException
+	 */
+	public VerwaltungsklasseImpl() throws IllegalArgumentException {
+	    /*
+	     * Der No-Argument Konstruktor muss nur vorhanden sein und bedarf keinen Inhalt
+	     */
+	  }
+	
+	/**
+	 *
+     * Initialsierungsmethode für die Datenbank-Mapper
+     * 
+     * @throws IllegalArgumentException
+	 */
 	public void init() throws IllegalArgumentException {
 	    /*
 	     * Ganz wesentlich ist, dass die BankAdministration einen vollständigen Satz
@@ -61,146 +121,216 @@ implements Verwaltungsklasse{
 	  }
 	
 	
-	@Override
+	/**
+	 * Eine Pinnwand anlegen, bzw mit einem Nutzer verknüpfen
+	 * @param nutzer
+	 * @throws IllegalArgumentException
+	 */
 	public void setPinnwand(Nutzer nutzer) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
-		
 	}
 
-	@Override
-	public void setKommentar(String text, Beitrag beitrag)
-			throws IllegalArgumentException {
+	/**
+	 * Kommentartext erstellen und einem Beitrag zuweisen
+	 * @param text
+	 * @param beitrag
+	 * @throws IllegalArgumentException
+	 */
+	public void setKommentar(String text, Beitrag beitrag) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	/**
+	 * Beitragstext erstellen
+	 * @param text
+	 * @throws IllegalArgumentException
+	 */
 	public void setBeitrag(String text) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void setAbonnement(Abonnement abonnement)
-			throws IllegalArgumentException {
+	/**
+	 * Setzen eines Abonnements
+	 * @param abonnement
+	 * @throws IllegalArgumentException
+	 */
+	public void setAbonnement(Abonnement abonnement) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void loeschenKommentar(Kommentar kommentar)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	/**
+	 * Kommentar loeschen
+	 * @param kommentar
+	 * @throws IllegalArgumentException
+	 */
+	public void loeschenKommentar(Kommentar kommentar) throws IllegalArgumentException {
+		this.kMapper.entfernen(kommentar);
 		
 	}
 
-	@Override
-	public void loeschenBeitrag(Beitrag beitrag)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	/**
+	 * Einen Beitrag löschen
+	 * @param beitrag
+	 * @throws IllegalArgumentException
+	 */
+	public void loeschenBeitrag(Beitrag beitrag) throws IllegalArgumentException {
+		//zuerst alle Likes und Kommentare löschen
 		
 	}
 
-	@Override
-	public void likeBeitrag(Beitrag beitrag, Nutzer nutzer)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	/**
+	 * Einen Beitrag liken (Kommentare können nicht geliked oder kommentiert werden)
+	 * @param beitrag
+	 * @param nutzer
+	 * @throws IllegalArgumentException
+	 */
+	public void likeBeitrag(Beitrag beitrag, Nutzer nutzer) throws IllegalArgumentException {
+		Like l = new Like();
+		l.setNutzerID(nutzer.getId());
+		l.setBeitragID(beitrag.getId());
+		//BEITRAG FEHLT IN MAPPER
+		this.lMapper.anlegen(l);
 		
 	}
 
-	@Override
-	public void unlikeBeitrag(Beitrag beitrag, Nutzer nutzer)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	/**
+	 * Einen geliketen Beitrag wieder entliken
+	 * @param beitrag
+	 * @param nutzer
+	 * @throws IllegalArgumentException
+	 */
+	public void unlikeBeitrag(Like like) throws IllegalArgumentException {
+		this.lMapper.entfernen(like);
 		
 	}
 
-	@Override
+	/**
+	 * Auslesen aller Nutzer. Zurückgegeben wird ein Vector der alle Nutzer Objekte der Datenbank enthält
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<Nutzer> getAlleNutzer() throws IllegalArgumentException {
 		return this.nMapper.suchenAlle();
 	}
 
-	@Override
+	/**
+	 * Auslesen aller Likes. Zurückgegeben wird ein Vector der alle Like Objekte der Datenbank enthält
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<Like> getAlleLikes() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Vector<Beitrag> getAlleBeitraege() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Vector<Abonnement> getAlleAbonnenten()
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Vector<BusinessObject> getAlleBusinessObjects()
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Beitrag getBeitrag(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.lMapper.suchenAlle();
 	}
 
 	/**
-	 * 
+	 * Auslesen aller Beiträge. Zurückgegeben wird ein Vector der alle Beitrags Objekte der Datenbank enthält
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Beitrag> getAlleBeitraege() throws IllegalArgumentException {
+		return this.bMapper.suchenAlle();
+	}
+
+	/**
+	 * Auslesen aller Abonnenten. Zurückgegeben wird ein Vector der alle Abonnement Objekte der Datenbank enthält
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Abonnement> getAlleAbonnenten() throws IllegalArgumentException {
+		return this.aMapper.suchenAlle();
+	}
+	
+	/**
+	 * Auslesen eines einzelnen Beitrag. Zurückgegeben wird das Beitrags Objekt
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Beitrag getBeitrag(int id) throws IllegalArgumentException {
+		return this.bMapper.suchenID(id);
+	}
+
+	/**
+	 * Ausgeben eines Nutzers anhand dessen ID
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
 	public Nutzer getNutzerByID(int id) throws IllegalArgumentException {
 		return nMapper.suchenID(id);
 		
 	}
 
-	@Override
-	public Vector<Nutzer> getNutzerByNachname(String nachname)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Ausgeben von Nutzern durch Eingabe des Nachnamens
+	 * @param nachname
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Nutzer> getNutzerByNachname(String nachname) throws IllegalArgumentException {
+		return this.nMapper.suchenNachname(nachname);
 	}
 
-	@Override
+	/**
+	 * Ausgeben von Nutzern durch Eingabe des Vornamens
+	 * @param vorname
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Vector<Nutzer> getNutzerByVorname(String vorname) throws IllegalArgumentException {
 		return this.nMapper.suchenVorname(vorname);
 	}
 
-	@Override
-	public Vector<Nutzer> getNutzerByNickname(String nickname)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Ausgeben von Nutzern durch Eingabe des Nicknamen
+	 * @param nickname
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Nutzer> getNutzerByNickname(String nickname) throws IllegalArgumentException {
+		return this.nMapper.suchenNickname(nickname);
 	}
 
-	@Override
+	/**
+	 * Ausgeben eines Pinnwand-Objektes anhand der ID
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Pinnwand getPinnwand(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.pMapper.suchenID(id);
 	}
 
-	@Override
+	/**
+	 * Ausgeben eines Kommentar-Objektes anhand der ID
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Kommentar getKommentar(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.kMapper.suchenID(id);
 	}
 
-	@Override
+	/**
+	 * Ausgeben eines Abonnement-Objektes anhand der ID
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Abonnement getAbonnement(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.aMapper.suchenID(id);
 	}
 
-	@Override
+	/**
+	 * Ausgeben eines Like-Objektes anhand der ID
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public Like getLike(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.lMapper.suchenID(id);
 	}
-	//wichtig !!
 }

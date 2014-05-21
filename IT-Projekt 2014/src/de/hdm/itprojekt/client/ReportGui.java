@@ -30,9 +30,6 @@ public class ReportGui extends HorizontalPanel{
 	
 	public ReportGui(){
 		
-		
-		System.out.println("test12345");
-		
 		this.add(reportPanel);
 		//reportPanel
 		reportPanel.add(steuerPanel);

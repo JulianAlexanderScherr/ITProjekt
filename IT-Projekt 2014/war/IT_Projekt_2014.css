@@ -1,3 +1,18 @@
+a.signInLink {
+    background: #32849B;
+    border-radius: 5px;
+    color: #FFFFFF !important;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 1px solid #32849B;
+}
+
+a.signInLink:hover {
+    background: #fff;
+    border-radius: 3px;
+    color: #32849B !important;
+    text-decoration: none;
+}
 
 body {
     background: url("images/triangular.png") repeat !important;
@@ -31,6 +46,13 @@ body {
     padding: 20px;
 }
 
+#footer {
+    background: url("images/triangular_blue.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-radius: 0 0 5px 5px;
+    color: #FFFFFF;
+    padding: 10px 20px;
+}
+
 .head_text{
 	color: #32849B;
 	text-transform: uppercase;
@@ -45,13 +67,21 @@ body {
 	height: 75px;
 }
 
-#wrapper {
-	background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 4px #606060;
-    margin: 85px auto auto;
-    width: 1000px;
-    opacity: 1.0 !important; 
+.icon {
+    float: right;
+    margin-top: -80px;
+}
+
+.loginPanel {
+    padding: 30px;
+    width: 100%;
+}
+
+.loginText {
+    font-family: open sans,sans-serif;
+    font-size: 14px;
+    padding-bottom: 20px;
+    width: 390px;
 }
 
 .logo {
@@ -93,6 +123,17 @@ body {
 	text-decoration: none;
 }
 
+.sendButton {
+  display: block;
+  font-size: 16pt;
+}
+
+.suchenPanel .gwt-SuggestBox {
+    margin-left: 10px;
+    margin-top: -4px;
+    width: 195px;
+}
+
 .verwaltungsPanel {
     border: 1px solid #A0A0A0;
     padding: 20px;
@@ -121,11 +162,13 @@ body {
     width: 193px;
 }
 
-#footer {
-    background: url("images/triangular_blue.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
-    border-radius: 0 0 5px 5px;
-    color: #FFFFFF;
-    padding: 10px 20px;
+#wrapper {
+	background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 4px #606060;
+    margin: 85px auto auto;
+    width: 1000px;
+    opacity: 1.0 !important; 
 }
 
 h1 {
@@ -134,17 +177,6 @@ h1 {
   color: blue;
   margin: 40px 0px 70px;
   text-align: center;
-}
-
-.sendButton {
-  display: block;
-  font-size: 16pt;
-}
-
-.suchenPanel .gwt-SuggestBox {
-    margin-left: 10px;
-    margin-top: -4px;
-    width: 195px;
 }
 
 .gwt-ListBox {

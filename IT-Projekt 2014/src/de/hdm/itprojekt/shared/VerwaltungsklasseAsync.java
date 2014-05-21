@@ -42,7 +42,7 @@ public interface VerwaltungsklasseAsync {
 
 	void likeBeitrag(Beitrag beitrag, Nutzer nutzer,AsyncCallback<Void> callback);
 
-	void unlikeBeitrag(Beitrag beitrag, Nutzer nutzer,AsyncCallback<Void> callback);
+	void unlikeBeitrag(Like like, AsyncCallback<Void> callback);
 
 	void getAlleNutzer(AsyncCallback<Vector<Nutzer>> callback);
 
@@ -51,8 +51,6 @@ public interface VerwaltungsklasseAsync {
 	void getAlleBeitraege(AsyncCallback<Vector<Beitrag>> callback);
 
 	void getAlleAbonnenten(AsyncCallback<Vector<Abonnement>> callback);
-
-	void getAlleBusinessObjects(AsyncCallback<Vector<BusinessObject>> callback);
 
 	void getBeitrag(int id, AsyncCallback<Beitrag> callback);
 
