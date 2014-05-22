@@ -3,9 +3,8 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.itprojekt.server.db.DBConnection;
-import de.hdm.itprojekt.server.db.DBConnectionLocal;
-import de.hdm.itprojekt.shared.bo.*;
+import de.hdm.itprojekt.shared.bo.Beitrag;
+import de.hdm.itprojekt.shared.bo.Kommentar;
 
 /**
  * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
@@ -62,7 +61,7 @@ public class KommentarMapper {
    */
   public Kommentar suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -79,8 +78,9 @@ public class KommentarMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
         Kommentar k = new Kommentar();
-        k.setId(rs.getInt("id"));
-        k.setKommentarID(rs.getInt("kommentar"));
+        k.setId(rs.getInt("kommentarID"));
+        k.setNutzerID(rs.getInt("nutzerID"));
+        k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
         return k;
       }
     }
@@ -101,7 +101,7 @@ public class KommentarMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Kommentar> suchenAlle() {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Kommentar> result = new Vector<Kommentar>();
@@ -115,8 +115,10 @@ public class KommentarMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
       while (rs.next()) {
     	  Kommentar k = new Kommentar();
-          k.setKommentarID(rs.getInt("kommentarID"));
+          k.setId(rs.getInt("kommentarID"));
+          k.setNutzerID(rs.getInt("nutzerID"));
           k.setKommentartext(rs.getString("text"));
+          k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
           
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(k);
@@ -142,7 +144,7 @@ public class KommentarMapper {
    */
   
   public Kommentar anlegen(Kommentar k) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -160,13 +162,13 @@ public class KommentarMapper {
              * k erhält den bisher maximalen, nun um 1 inkrementierten
              * Primärschlüssel.
              */
-            k.setKommentarID(rs.getInt("maxid") + 1);
+            k.setId(rs.getInt("maxid") + 1);
 
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO kommentar (KommentarID, nutzerID, text, erstellungszeitpunkt) "
-                + "VALUES (" + k.getKommentarID() + ",'" + k.getText() + "','" + k.getNutzerID() + "','"
+                + "VALUES (" + k.getId() + ",'" + k.getKommentartext() + "','" + k.getNutzerID() + "','"
                 + k.getErstellungszeitpunkt() + "')");
           }
         }
@@ -193,14 +195,14 @@ public class KommentarMapper {
    * @return das als Parameter übergebene Objekt
    */
   public Kommentar aendern(Kommentar k) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE kommentar " + "SET text=\""
               + k.getKommentartext()
-              + "WHERE kommentarID=" + k.getKommentarID());
+              + "WHERE kommentarID=" + k.getId());
       
     }
     catch (SQLException e2) {
@@ -219,7 +221,7 @@ public class KommentarMapper {
  * @param k das aus der DB zu löschende "Objekt"
  */
 public void entfernen(Kommentar k) {
-  Connection con = DBConnection.connection();
+  Connection con = DBConnectionLocal.connection();
 
   try {
     Statement stmt = con.createStatement();
@@ -230,6 +232,18 @@ public void entfernen(Kommentar k) {
     e.printStackTrace();
   }
 }
+public void entfernenKommentarVon(Beitrag b) {
+	  Connection con = DBConnectionLocal.connection();
+
+	  try {
+	    Statement stmt = con.createStatement();
+
+	    stmt.executeUpdate("DELETE FROM kommentar " + "WHERE beitragID=" + b.getId());
+	  }
+	  catch (SQLException e) {
+	    e.printStackTrace();
+	  }
+	}
 
 }
 
