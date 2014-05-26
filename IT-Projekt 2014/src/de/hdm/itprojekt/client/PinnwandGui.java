@@ -2,21 +2,24 @@ package de.hdm.itprojekt.client;
 
 import java.util.Vector;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.itprojekt.shared.VerwaltungsklasseAsync;
 import de.hdm.itprojekt.shared.bo.Nutzer;
@@ -39,10 +42,16 @@ public class PinnwandGui extends HorizontalPanel {
 	//Anlegen der erforderlichen Widgets
 	private Label abonnenten = new Label("Abonnenten");
 	private Label pinnwand = new Label("Pinnwand");
-	private Label pinnwandVon = new Label("Meine persoenliche Pinnwand");
+	private Label pinnwandVon = new Label("Meine persönliche Pinnwand");
 	private Label aboSuche = new Label("Nutzer suchen: ");
 
 	VerwaltungsklasseAsync verwaltung = null;
+	
+	
+	
+	
+	//
+	private Button eintragloeschen = new Button("Eintrag loeschen");
 	
 	public PinnwandGui(){
 		
@@ -82,7 +91,8 @@ public class PinnwandGui extends HorizontalPanel {
 		if (verwaltung == null) {
 			verwaltung = ClientsideSettings.getVerwaltung();
 		}
-		
+	
+
 		verwaltung.getAlleNutzer(new AsyncCallback<Vector<Nutzer>>(){
 
 			@Override
@@ -92,15 +102,56 @@ public class PinnwandGui extends HorizontalPanel {
 
 			@Override
 			public void onSuccess(Vector<Nutzer> result) {
-				ListBox userList = new ListBox();
+				
+				NutzerCell cell = new NutzerCell();
+			    
+			    final ListDataProvider<Nutzer> nutzerDataProvider = new ListDataProvider<Nutzer>();
+			    final CellList<Nutzer> nutzerCellList;
+			    final SingleSelectionModel<Nutzer>  singleSelectionModel;
+	
+			    ProvidesKey<Nutzer> keyProvider = new ProvidesKey<Nutzer>() {
+			            public Object getKey(Nutzer item) {
+			                // Always do a null check.
+			                return (item == null) ? null : item.getId();
+			            }
+			        };
+			        nutzerCellList = new CellList<Nutzer> (cell, keyProvider);
+			        nutzerDataProvider.addDataDisplay(nutzerCellList);
+			        nutzerCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+	
+			        singleSelectionModel = new SingleSelectionModel<Nutzer>(keyProvider);
+			        nutzerCellList.setSelectionModel(singleSelectionModel);
+			        singleSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+	
+			        	 @Override
+			             public void onSelectionChange(SelectionChangeEvent event) {
+			                 
+			             }
+
+		        });
+
+			        	
+		        for(Nutzer n : result){
+		        	nutzerDataProvider.getList().add(0, n);
+				}
+		        
+		        nutzerCellList.setStyleName("cellList");
+		        abonnentenPanel.add(nutzerCellList);  
+		        
+		        
+		        Button b = new Button("Eintrag löschen", new ClickHandler() {
+
+					//Button Eintrag Löschen
+					public void onClick(ClickEvent event) {
+						int selectedIndex = nutzerDataProvider.getList().indexOf(singleSelectionModel.getSelectedObject());
+						nutzerDataProvider.getList().remove(selectedIndex);
+					}
+				    });
+				abonnentenPanel.add(b); 
+		       
+				
 				MultiWordSuggestOracle vorauswahl = new MultiWordSuggestOracle();
 				
-				for(Nutzer n : result){
-					userList.addItem(n.getVorname() + " " + n.getNachname());
-					vorauswahl.add(n.getVorname() + " " + n.getNachname());
-				}
-				userList.setVisibleItemCount(3);
-				abonnentenPanel.add(userList);
 				final SuggestBox suchFeld = new SuggestBox(vorauswahl);
 				suchenPanel.add(suchFeld);
 				
@@ -142,6 +193,5 @@ public class PinnwandGui extends HorizontalPanel {
 			}
 			
 			});
-		
 	}
 }

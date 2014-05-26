@@ -46,6 +46,22 @@ body {
     padding: 20px;
 }
 
+.cellList {
+    background: #F0F0F0;
+    height: 120px;
+    margin-top: 20px;
+    overflow: auto;
+    width: 303px;
+}
+
+.cellList div div div {
+    padding: 10px;
+}
+
+.cellList div div div:selection {
+    padding: 20px;
+}
+
 #footer {
     background: url("images/triangular_blue.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
     border-radius: 0 0 5px 5px;
