@@ -3,9 +3,8 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.shared.bo.Beitrag;
+import de.hdm.itprojekt.shared.bo.Kommentar;
 
 /**
  * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
@@ -62,7 +61,7 @@ public class KommentarMapper {
    */
   public Kommentar suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -79,8 +78,9 @@ public class KommentarMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
         Kommentar k = new Kommentar();
-        k.setId(rs.getInt("id"));
-        k.setKommentarID(rs.getInt("kommentar"));
+        k.setId(rs.getInt("kommentarID"));
+        k.setNutzerID(rs.getInt("nutzerID"));
+        k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
         return k;
       }
     }
@@ -92,7 +92,43 @@ public class KommentarMapper {
     return null;
   }
 
-  
+  public Kommentar suchenBeitragID(int id) {
+	    // DB-Verbindung holen
+	    Connection con = DBConnectionLocal.connection();
+
+	    //Ergebnisvektor vorbereiten
+	    Vector<Kommentar> result = new Vector <Kommentar>();
+	    
+	    try {
+	      // Leeres SQL-Statement (JDBC) anlegen
+	      Statement stmt = con.createStatement();
+
+	      // Statement ausfüllen und als Query an die DB schicken
+	      ResultSet rs = stmt.executeQuery("SELECT kommentarID, nutzerID, text, erstellungszeitpunkt FROM Kommentar "
+	          + "WHERE beitragID= " + id );
+
+	      /*
+	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
+	       * werden. Prüfe, ob ein Ergebnis vorliegt.
+	       */
+	      if (rs.next()) {
+	        // Ergebnis-Tupel in Objekt umwandeln
+	        Kommentar k = new Kommentar();
+	        k.setId(rs.getInt("kommentarID"));
+	        k.setNutzerID(rs.getInt("nutzerID"));
+	        k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
+	        
+	        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+	        result.addElement(k);
+	      }
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	      return null;
+	    }
+
+	    return null;
+	  }
   /**
    * Auslesen aller Kommentare.
    * 
@@ -101,7 +137,7 @@ public class KommentarMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Kommentar> suchenAlle() {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Kommentar> result = new Vector<Kommentar>();
@@ -115,8 +151,10 @@ public class KommentarMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
       while (rs.next()) {
     	  Kommentar k = new Kommentar();
-          k.setKommentarID(rs.getInt("kommentarID"));
-          k.setText(rs.getString("text"));
+          k.setId(rs.getInt("kommentarID"));
+          k.setNutzerID(rs.getInt("nutzerID"));
+          k.setKommentartext(rs.getString("text"));
+          k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
           
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(k);
@@ -142,7 +180,7 @@ public class KommentarMapper {
    */
   
   public Kommentar anlegen(Kommentar k) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -160,13 +198,13 @@ public class KommentarMapper {
              * k erhält den bisher maximalen, nun um 1 inkrementierten
              * Primärschlüssel.
              */
-            k.setKommentarID(rs.getInt("maxid") + 1);
+            k.setId(rs.getInt("maxid") + 1);
 
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO kommentar (KommentarID, nutzerID, text, erstellungszeitpunkt) "
-                + "VALUES (" + k.getKommentarID() + ",'" + k.getText() + "','" + k.getNutzerID() + "','"
+                + "VALUES (" + k.getId() + ",'" + k.getKommentartext() + "','" + k.getNutzerID() + "','"
                 + k.getErstellungszeitpunkt() + "')");
           }
         }
@@ -193,14 +231,14 @@ public class KommentarMapper {
    * @return das als Parameter übergebene Objekt
    */
   public Kommentar aendern(Kommentar k) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE kommentar " + "SET text=\""
-              + n.getText() "\" "
-              + "WHERE kommentarID=" + k.getKommentarID());
+              + k.getKommentartext()
+              + "WHERE kommentarID=" + k.getId());
       
     }
     catch (SQLException e2) {
@@ -208,7 +246,7 @@ public class KommentarMapper {
     }
 
     // Um Analogie zu anlegen(Kommentar k) zu wahren, geben wir n zurück
-    return ;
+    return k;
   }
 
 
@@ -219,7 +257,7 @@ public class KommentarMapper {
  * @param k das aus der DB zu löschende "Objekt"
  */
 public void entfernen(Kommentar k) {
-  Connection con = DBConnection.connection();
+  Connection con = DBConnectionLocal.connection();
 
   try {
     Statement stmt = con.createStatement();
@@ -230,6 +268,18 @@ public void entfernen(Kommentar k) {
     e.printStackTrace();
   }
 }
+public void entfernenKommentarVon(Beitrag b) {
+	  Connection con = DBConnectionLocal.connection();
+
+	  try {
+	    Statement stmt = con.createStatement();
+
+	    stmt.executeUpdate("DELETE FROM kommentar " + "WHERE beitragID=" + b.getId());
+	  }
+	  catch (SQLException e) {
+	    e.printStackTrace();
+	  }
+	}
 
 }
 

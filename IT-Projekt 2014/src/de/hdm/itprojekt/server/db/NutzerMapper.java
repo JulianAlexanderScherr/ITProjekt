@@ -3,9 +3,9 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.server.db.DBConnectionLocal;
+//import de.hdm.itprojekt.server.db.DBConnectionLocalLocal;
+import de.hdm.itprojekt.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Nutzer</code>-Objekte auf eine relationale
@@ -62,7 +62,7 @@ public class NutzerMapper {
    */
   public Nutzer suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -70,17 +70,19 @@ public class NutzerMapper {
 
       // Statement ausfüllen und als Query an die DB schicken
       ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname FROM nutzer "
-          + "WHERE nutzerID= " + id );
-
+          + "WHERE nutzerID= " + id);
       /*
        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
        * werden. Prüfe, ob ein Ergebnis vorliegt.
        */
+  
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
         Nutzer n = new Nutzer();
-        n.setId(rs.getInt("id"));
-        n.setNutzerID(rs.getInt("nutzer"));
+        n.setId(rs.getInt("nutzerID"));
+        n.setVorname(rs.getString("vorname"));
+        n.setNachname(rs.getString("nachname"));
+        n.setNickname(rs.getString("nickname"));
         return n;
       }
     }
@@ -93,65 +95,101 @@ public class NutzerMapper {
   }
 
   
-  public Nutzer suchenVorname() {
+  public Vector<Nutzer> suchenVorname(String vorname) {
 	    // DB-Verbindung holen
-	    Connection con = DBConnection.connection();
+	    Connection con = DBConnectionLocal.connection();
 
+	    // Ergebnisvektor vorbereiten
+	    Vector<Nutzer> result = new Vector<Nutzer>();
+	    
 	    try {
 	      // Leeres SQL-Statement (JDBC) anlegen
 	      Statement stmt = con.createStatement();
 
 	      // Statement ausfüllen und als Query an die DB schicken
-	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname FROM nutzer "
-	              + "WHERE vorname= " + vorname );
+	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname " + "FROM nutzer "
+	              + "WHERE vorname LIKE '" + vorname + "' ORDER BY vorname");
+
+	      while (rs.next()) {
+	          // Ergebnis-Tupel in Objekt umwandeln
+	          Nutzer n = new Nutzer();
+	          n.setId(rs.getInt("nutzerID"));
+	          n.setVorname(rs.getString("vorname"));
+	          n.setNachname(rs.getString("nachname"));
+	          n.setNickname(rs.getString("nickname"));
+	          result.addElement(n);
+	      }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	      return null;
 	    }
-
-	    return null;
+	    return result;
 	  }
   
-  public Nutzer suchenNachname() {
+  public Vector<Nutzer> suchenNachname(String nachname) {
 	    // DB-Verbindung holen
-	    Connection con = DBConnection.connection();
+	    Connection con = DBConnectionLocal.connection();
+	    
+	    // Ergebnisvektor vorbereiten
+	    Vector<Nutzer> result = new Vector<Nutzer>();
 
 	    try {
 	      // Leeres SQL-Statement (JDBC) anlegen
 	      Statement stmt = con.createStatement();
 
 	      // Statement ausfüllen und als Query an die DB schicken
-	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname FROM nutzer "
-	              + "WHERE nachname= " + nachname );
+	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname " + "FROM nutzer "
+	              + "WHERE nachname LIKE '" + nachname + "' ORDER BY nachname");
+	      
+	      while (rs.next()) {
+	          // Ergebnis-Tupel in Objekt umwandeln
+	          Nutzer n = new Nutzer();
+	          n.setId(rs.getInt("nutzerID"));
+	          n.setVorname(rs.getString("vorname"));
+	          n.setNachname(rs.getString("nachname"));
+	          n.setNickname(rs.getString("nickname"));
+	          result.addElement(n);
+	        }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	      return null;
 	    }
-
-	    return null;
+	    return result;
 	  }
   
   
-  public Nutzer suchenNickname() {
+  public  Vector<Nutzer> suchenNickname(String nickname) {
 	    // DB-Verbindung holen
-	    Connection con = DBConnection.connection();
+	    Connection con = DBConnectionLocal.connection();
+	    
+	    // Ergebnisvektor vorbereiten
+	    Vector<Nutzer> result = new Vector<Nutzer>();
 
 	    try {
 	      // Leeres SQL-Statement (JDBC) anlegen
 	      Statement stmt = con.createStatement();
 
 	      // Statement ausfüllen und als Query an die DB schicken
-	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname FROM nutzer "
-	              + "WHERE nickname= " + nickname );
+	      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname " + "FROM nutzer "
+	              + "WHERE nickname LIKE '" + nickname + "' ORDER BY nickname");
+	      if (rs.next()) {
+	          // Ergebnis-Tupel in Objekt umwandeln
+	          Nutzer n = new Nutzer();
+	          n.setId(rs.getInt("nutzerID"));
+	          n.setVorname(rs.getString("vorname"));
+	          n.setNachname(rs.getString("nachname"));
+	          n.setNickname(rs.getString("nickname"));
+	          result.addElement(n);
+	        }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	      return null;
 	    }
 
-	    return null;
+	    return result;
 	  }
   
   
@@ -163,7 +201,7 @@ public class NutzerMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Nutzer> suchenAlle() {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Nutzer> result = new Vector<Nutzer>();
@@ -177,7 +215,7 @@ public class NutzerMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
       while (rs.next()) {
           Nutzer n = new Nutzer();
-          n.setNutzerID(rs.getInt("nutzerID"));
+          n.setId(rs.getInt("nutzerID"));
           n.setVorname(rs.getString("vorname"));
           n.setNachname(rs.getString("nachname"));
           n.setNickname(rs.getString("nickname"));
@@ -206,7 +244,7 @@ public class NutzerMapper {
    */
   
   public Nutzer anlegen(Nutzer n) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -224,13 +262,13 @@ public class NutzerMapper {
              * c erhält den bisher maximalen, nun um 1 inkrementierten
              * Primärschlüssel.
              */
-            n.setNutzerID(rs.getInt("maxid") + 1);
+            n.setId(rs.getInt("maxid") + 1);
 
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO nutzer (nutzerID, vorname, nachname, nickname) "
-                + "VALUES (" + n.getnutzerID() + ",'" + n.getVorname() + "','"
+                + "VALUES (" + n.getId() + ",'" + n.getVorname() + "','"
                 + n.getNachname() + "', '" + n.getNickname() + "')");
           }
         }
@@ -257,14 +295,14 @@ public class NutzerMapper {
    * @return das als Parameter übergebene Objekt
    */
   public Nutzer aendern(Nutzer n) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       Statement stmt = con.createStatement();
 
       stmt.executeUpdate("UPDATE nutzer " + "SET vorname=\""
-              + n.getVorname() + "\", " + "nachanme=\"" + n.getNachname() + "\",  " + "nickname=\"" + n.getNickname() + "\"
-              + "WHERE nutzerID=" + n.getNutzerID());
+              + n.getVorname() + "\", " + "nachanme=\"" + n.getNachname() + "\",  " + "nickname=\"" + n.getNickname() 
+              + "WHERE nutzerID=" + n.getId());
       
     }
     catch (SQLException e2) {
@@ -272,7 +310,7 @@ public class NutzerMapper {
     }
 
     // Um Analogie zu anlegen(Nutzer n) zu wahren, geben wir n zurück
-    return ;
+    return n;
   }
 
 }

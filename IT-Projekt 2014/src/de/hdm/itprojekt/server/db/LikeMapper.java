@@ -3,9 +3,12 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.marian.server.db.Customer;
-import de.hdm.marian.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.*;
+import de.hdm.itprojekt.shared.bo.Beitrag;
+import de.hdm.itprojekt.shared.bo.Like;
+
+
+
+
 
 /**
  * Mapper-Klasse, die <code>Like</code>-Objekte auf eine relationale
@@ -62,7 +65,7 @@ public class LikeMapper {
    */
   public Like suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -79,8 +82,9 @@ public class LikeMapper {
       if (rs.next()) {
         // Ergebnis-Tupel in Objekt umwandeln
     	Like l = new Like();
-        l.setId(rs.getInt("id"));
-        l.setLikeID(rs.getInt("like"));
+        l.setId(rs.getInt("likeID"));
+        l.setNutzerID(rs.getInt("nutzerID"));
+        l.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
         return l;
       }
     }
@@ -93,6 +97,46 @@ public class LikeMapper {
   }
 
   
+  public Like suchenBeitragID(int id) {
+	    // DB-Verbindung holen
+	    Connection con = DBConnectionLocal.connection();
+
+	 // Ergebnisvektor vorbereiten
+	    Vector<Like> result = new Vector<Like>();
+	    
+	    try {
+	      // Leeres SQL-Statement (JDBC) anlegen
+	      Statement stmt = con.createStatement();
+
+	      // Statement ausfüllen und als Query an die DB schicken
+	      ResultSet rs = stmt.executeQuery("SELECT likeID, nutzerID, erstellungszeitpunkt FROM Like "
+	          + "WHERE beitragID= " + id );
+
+	      /*
+	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
+	       * werden. Prüfe, ob ein Ergebnis vorliegt.
+	       */
+	      if (rs.next()) {
+	        // Ergebnis-Tupel in Objekt umwandeln
+	    	Like l = new Like();
+	        l.setId(rs.getInt("likeID"));
+	        l.setNutzerID(rs.getInt("nutzerID"));
+	        l.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
+	        
+	     // Hinzufügen des neuen Objekts zum Ergebnisvektor
+	        result.addElement(l);
+	        
+	      }
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+
+	    // Ergebnisvektor zurückgeben
+	    return null;
+	  }  
+
+  
   /**
    * Auslesen aller Likes.
    * 
@@ -101,7 +145,7 @@ public class LikeMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Like> suchenAlle() {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Like> result = new Vector<Like>();
@@ -115,7 +159,7 @@ public class LikeMapper {
       // Für jeden Eintrag im Suchergebnis wird nun ein Like-Objekt erstellt.
       while (rs.next()) {
     	  Like l = new Like();
-          l.setLikeID(rs.getInt("likeID"));
+          l.setId(rs.getInt("likeID"));
           
         // Hinzufügen des neuen Objekts zum Ergebnisvektor
         result.addElement(l);
@@ -141,7 +185,7 @@ public class LikeMapper {
    */
   
   public Like anlegen(Like l) {
-    Connection con = DBConnection.connection();
+    Connection con = DBConnectionLocal.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -159,13 +203,13 @@ public class LikeMapper {
              * l erhält den bisher maximalen, nun um 1 inkrementierten
              * Primärschlüssel.
              */
-            l.setLikeID(rs.getInt("maxid") + 1);
+            l.setId(rs.getInt("maxid") + 1);
 
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
             stmt.executeUpdate("INSERT INTO like (likeID, nutzerID, erstellungszeitpunkt) "
-                + "VALUES (" + l.getLikeID() + ",'" + l.getText() + "','" + l.getNutzerID() + "','"
+                + "VALUES (" + l.getId() + "','" + l.getNutzerID() + "','"
                 + l.getErstellungszeitpunkt() + "')");
           }
         }
@@ -192,7 +236,7 @@ public class LikeMapper {
  * @param l das aus der DB zu löschende "Objekt"
  */
 public void entfernen(Like l) {
-  Connection con = DBConnection.connection();
+  Connection con = DBConnectionLocal.connection();
 
   try {
     Statement stmt = con.createStatement();
@@ -203,6 +247,19 @@ public void entfernen(Like l) {
     e.printStackTrace();
   }
 }
+
+public void entfernenLikeVon(Beitrag b) {
+	  Connection con = DBConnectionLocal.connection();
+
+	  try {
+	    Statement stmt = con.createStatement();
+
+	    stmt.executeUpdate("DELETE FROM like " + "WHERE beitragID=" + b.getId());
+	  }
+	  catch (SQLException e) {
+	    e.printStackTrace();
+	  }
+	}
 
 }
 
