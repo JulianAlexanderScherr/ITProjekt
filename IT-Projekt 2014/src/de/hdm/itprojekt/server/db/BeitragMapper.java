@@ -93,8 +93,44 @@ public class BeitragMapper {
   }
 
   
+  public Vector<Beitrag> suchenNutzer(Nutzer n) {
+	    // DB-Verbindung holen
+	    Connection con = DBConnectionLocal.connection();
+
+	    // Ergebnisvektor vorbereiten
+	    Vector<Beitrag> result = new Vector<Beitrag>();
+
+	    try {
+	      // Leeres SQL-Statement (JDBC) anlegen
+	      Statement stmt = con.createStatement();
+
+	      // Statement ausfüllen und als Query an die DB schicken
+	      ResultSet rs = stmt.executeQuery("SELECT beitragID, text, erstellungszeitpunkt FROM beitrag "
+	          + "WHERE nutzerID= " + n.getId() );
+
+	      /*
+	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
+	       * werden. Prüfe, ob ein Ergebnis vorliegt.
+	       */
+	      if (rs.next()) {
+	        // Ergebnis-Tupel in Objekt umwandeln
+	        Beitrag b = new Beitrag();
+	        b.setId(rs.getInt("id"));
+	        b.setBeitragstext(rs.getString("text"));
+	        b.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
+	        
+	     // Hinzufügen des neuen Objekts zum Ergebnisvektor
+	        result.addElement(b);
+	      }
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+
+	    return result;
+	  }
   /**
-   * Auslesen aller Beitr�ge.
+   * Auslesen aller Beitr�ge.
    * 
    * @return Ein Vektor mit Beitrag-Objekten, die sämtliche Konten
    *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter

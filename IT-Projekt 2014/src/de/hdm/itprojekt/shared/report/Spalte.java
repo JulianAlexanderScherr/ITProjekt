@@ -1,10 +1,10 @@
-package de.hdm.itprojekt.shared.reportGenerator;
+package de.hdm.itprojekt.shared.report;
 
 import java.io.Serializable;
 /**
  * Spalte eines <code>Zeile</code>-Objekts. <code>Spalte</code>-Objekte
- * implementieren das <code>Serializable</code>-Interface und können daher als
- * Kopie übertragen werden.
+ * implementieren das <code>Serializable</code>-Interface und kï¿½nnen daher als
+ * Kopie ï¿½bertragen werden.
  * @author Stefan Oberrieder vgl Peter Thies
  */
 public class Spalte implements Serializable {
@@ -22,7 +22,7 @@ public class Spalte implements Serializable {
 	 /**
 	   * <p>
 	   * Serialisierbare Klassen, die mittels GWT-RPC transportiert werden sollen,
-	   * müssen einen No-Argument-Konstruktor besitzen. Ist kein Konstruktor
+	   * mï¿½ssen einen No-Argument-Konstruktor besitzen. Ist kein Konstruktor
 	   * explizit angegeben, so existiert in Java-Klassen der Default-Konstruktor,
 	   * der dem No-Argument-Konstruktor entspricht. (Peter Thies, BankProject)
 	   */
@@ -48,7 +48,7 @@ public class Spalte implements Serializable {
 	}
 
 	/**
-	 * Setzen eines neuen Spaltenwertes
+	 * Setzen ueberschreiben eines Spaltenwertes
 	 * @param wert
 	 */
 	public void setWert(String wert) {

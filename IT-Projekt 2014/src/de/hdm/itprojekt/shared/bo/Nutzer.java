@@ -5,26 +5,26 @@ package de.hdm.itprojekt.shared.bo;
  * </br>
  * Ein Nutzer besteht aus einem Vorname, Nachnamen und einem Nickname
  * </br>
- * Zudem wird in dieser Klasse eine Referenz zu den Klassen Abonnement und Pinnwand über die jeweilige ID erstellt
+ * Zudem wird in dieser Klasse eine Referenz zu den Klassen Abonnement und Pinnwand ï¿½ber die jeweilige ID erstellt
  * @author Schwab
  */
 public class Nutzer extends BusinessObject {
 
 	/**
-	 * serialVersionUID wird benötigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
+	 * serialVersionUID wird benï¿½tigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
 	 * </br>weitere Informationen zu Serializable siehe <a href="http://www.zdnet.de/39154667/wissenswertes-zur-serialisierung-von-java-objekten/">Link</a>
 	 */
 	private static final long serialVersionUID = 1L;
 
 	
 	/**
-	 * Fremdschlüsselbeziehung zum Abonnement
+	 * Fremdschlï¿½sselbeziehung zum Abonnement
 	 */
 	private int abonnementID = 0;
 	
 	
 	/**
-	 * Fremdschlüsselbeziehung und einmalige Referenz zur Pinnwand
+	 * Fremdschlï¿½sselbeziehung und einmalige Referenz zur Pinnwand
 	 */
 	private int pinnwandID = 0;
 	
@@ -44,10 +44,15 @@ public class Nutzer extends BusinessObject {
 	 * Nickname eines Nutzers
 	 */
 	private String nickname = "";
+	
+	/**
+	 * Nickname eines Nutzers
+	 */
+	private String eMail = "";
 
 
 	/**
-	 * Auslesen des Fremdschlüssels vom Abonnement
+	 * Auslesen des Fremdschlï¿½ssels vom Abonnement
 	 * @return abonnementID
  	 */
 	public int getAbonnementID() {
@@ -55,7 +60,7 @@ public class Nutzer extends BusinessObject {
 	}
 
 	/**
-	 * Setzen des Fremdschlüssels vom Abonnement
+	 * Setzen des Fremdschlï¿½ssels vom Abonnement
 	 * @param abonnementID
 	 */
 	public void setAbonnementID(int abonnementID) {
@@ -63,7 +68,7 @@ public class Nutzer extends BusinessObject {
 	}
 	
 	/**
-	 * Auslesen des Fremdschlüssels zur Pinnwand 
+	 * Auslesen des Fremdschlï¿½ssels zur Pinnwand 
 	 * @return pinnwandID
 	 */
 	public int getPinnwandID() {
@@ -71,7 +76,7 @@ public class Nutzer extends BusinessObject {
 	}
 
 	/**
-	 * Setzen des Fremdschlüssels zur Pinnwand
+	 * Setzen des Fremdschlï¿½ssels zur Pinnwand
 	 * @param pinnwandID
 	 */
 	public void setPinnwandID(int pinnwandID) {
@@ -134,12 +139,30 @@ public class Nutzer extends BusinessObject {
 	
 	
 	/**
-	 * Textuelle Repräsentation der relevanten Inhalte des Nutzers in der Form: Vorname Nachname (Nickname)
+	 * Textuelle Reprï¿½sentation der relevanten Inhalte des Nutzers in der Form: Vorname Nachname (Nickname)
 	 * </br>
 	 * Beispiel: Mike Friedrichsen (Turbomike)
 	 */
 	public String toString(){
 		return this.getVorname() + " " + this.getNachname() + " (" + this.getNickname() + ")";
+	}
+
+	
+	/**
+	 * Auslesen der EMail Adresse
+	 * @return abonnementID
+ 	 */
+	public String geteMail() {
+		return eMail;
+	}
+
+	
+	/**
+	 * Setzen der EMail Adresse
+	 * @return abonnementID
+ 	 */
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
 	}
 	
 }

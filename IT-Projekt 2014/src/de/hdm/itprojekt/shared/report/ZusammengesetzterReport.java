@@ -1,12 +1,13 @@
-package de.hdm.itprojekt.shared.reportGenerator;
+package de.hdm.itprojekt.shared.report;
 
-import java.util.Vector;
+
 import java.io.Serializable;
+import java.util.Vector;
 
-import reportGenerator.Reihe;
+
 
 /**
- * Klasse ermöglicht das Zusammenstellen eines Reports der aus mehreren Teilreports besteht.
+ * Klasse ermï¿½glicht das Zusammenstellen eines Reports der aus mehreren Teilreports besteht.
  * @author Stefan
  *
  */
@@ -22,22 +23,22 @@ public class ZusammengesetzterReport extends Report implements Serializable {
 private Vector<Report> teilReport = new Vector<Report>();
 
 /**
- * Hinzufügen eines <code>Report</code> wird also zu einem Teilreport.
- * @param r der hinzugefügte Report
+ * Hinzufï¿½gen eines <code>Report</code> wird also zu einem Teilreport.
+ * @param r der hinzugefï¿½gte Report
  */
-public void hinzufügenTeilReport(Report r){
+public void hinzufuegenTeilReport(Report r){
 	this.teilReport.addElement(r);
 }
 /**
- * löschen eines Reports aus dem zusammengesetzten Report.
- * @param r zu löschender Report
+ * lï¿½schen eines Reports aus dem zusammengesetzten Report.
+ * @param r zu lï¿½schender Report
  */
 public void loeschenTeilReport(Report r){
  this.teilReport.remove(r);	
 }
 
 /**
- * Rückgabe der Anzahl der Report innerhalb eines Zusammengesetzten Reports
+ * Rï¿½ckgabe der Anzahl der Report innerhalb eines Zusammengesetzten Reports
  * @return
  */
 
@@ -46,10 +47,10 @@ public int anzahlTeilReport(){
 }
 
 /**
- * Rückgabe eines einzelnen Reports der an einer Bestimmten Stelle 
+ * Rï¿½ckgabe eines einzelnen Reports der an einer Bestimmten Stelle 
  * innerhalb eines Zusammengesetzten Reports steht.
  * @param i Position des Reports in der Vectorliste
- * @return gibt Position innerhalb des Vectors zurück.
+ * @return gibt Position innerhalb des Vectors zurï¿½ck.
  */
 public Report getTeilReportAt( int i){
 	return this.teilReport.elementAt (i);

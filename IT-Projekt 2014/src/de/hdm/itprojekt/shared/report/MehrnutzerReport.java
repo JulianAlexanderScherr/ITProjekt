@@ -1,4 +1,4 @@
-package de.hdm.itprojekt.shared.reportGenerator;
+package de.hdm.itprojekt.shared.report;
 
 import java.io.Serializable;
 /**

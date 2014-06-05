@@ -1,9 +1,13 @@
-package de.hdm.itprojekt.shared.reportGenerator;
+package de.hdm.itprojekt.shared.report;
 
 import java.io.Serializable;
 import java.util.Vector;
 
-
+/**
+ * Klasse die aus mehreren Spalten (Einzelnen Werten) eine ganze Zeile erstellt.
+ * @author Stefan
+ *
+ */
 
 public class Zeile implements Serializable {
 
@@ -12,12 +16,12 @@ public class Zeile implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L; 
 	/**
-	 * Speicherplatz für die Spalten der Zeile
+	 * Speicherplatz fï¿½r die Spalten der Zeile
 	 */
 	private Vector<Spalte> spalten = new Vector<Spalte>();
 	
 	/**
-	 * Hinzufügen einer Spalte
+	 * Hinzufï¿½gen einer Spalte
 	 * @param s das Spaltenobjekt
 	 */
 	
@@ -35,8 +39,8 @@ public class Zeile implements Serializable {
 	}
 	
 	/**
-	 * Auslesen sämtlicher Spalten
-	 * @return Vector-Objekt mit sämtlichen Spalten
+	 * Auslesen sï¿½mtlicher Spalten
+	 * @return Vector-Objekt mit sï¿½mtlichen Spalten
 	 */
 	
 	public Vector<Spalte> getSpalten(){
@@ -44,15 +48,15 @@ public class Zeile implements Serializable {
 	}
 	
 	/**
-	 * Auslesen der Anzahl sämtlicher Spalten
+	 * Auslesen der Anzahl sï¿½mtlicher Spalten
 	 * @return int Anzahl der Spalten
 	 */
 	public int getAnzahlSpalten(){
 		return this.spalten.size();
 	}
 	/**
-	 * Gibt eine Einzelne Spalte zurück
-	 * @param i = stelle an der die Spalte die zurückgegeben wird steht.
+	 * Gibt eine Einzelne Spalte zurï¿½ck
+	 * @param i = stelle an der die Spalte die zurï¿½ckgegeben wird steht.
 	 * @return
 	 */
 	public Spalte getSpalteAt(int i){

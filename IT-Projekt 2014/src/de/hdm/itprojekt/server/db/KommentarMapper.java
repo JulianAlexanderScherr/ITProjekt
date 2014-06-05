@@ -3,6 +3,7 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
+import de.hdm.itprojekt.shared.bo.Beitrag;
 import de.hdm.itprojekt.shared.bo.Kommentar;
 
 /**
@@ -91,7 +92,42 @@ public class KommentarMapper {
     return null;
   }
 
-  
+  public Vector<Kommentar> suchenBeitrag(Beitrag b) {
+	    // DB-Verbindung holen
+	    Connection con = DBConnectionLocal.connection();
+
+	    //Ergebnisvektor vorbereiten
+	    Vector<Kommentar> result = new Vector <Kommentar>();
+	    
+	    try {
+	      // Leeres SQL-Statement (JDBC) anlegen
+	      Statement stmt = con.createStatement();
+
+	      // Statement ausfüllen und als Query an die DB schicken
+	      ResultSet rs = stmt.executeQuery("SELECT kommentarID, nutzerID, text, erstellungszeitpunkt FROM Kommentar "
+	          + "WHERE beitragID= " + b.getId() );
+
+	      /*
+	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
+	       * werden. Prüfe, ob ein Ergebnis vorliegt.
+	       */
+	      if (rs.next()) {
+	        // Ergebnis-Tupel in Objekt umwandeln
+	        Kommentar k = new Kommentar();
+	        k.setId(rs.getInt("kommentarID"));
+	        k.setNutzerID(rs.getInt("nutzerID"));
+	        k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
+	        
+	        // Hinzufügen des neuen Objekts zum Ergebnisvektor
+	        result.addElement(k);
+	      }
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+
+	    return result;
+	  }
   /**
    * Auslesen aller Kommentare.
    * 
@@ -231,6 +267,18 @@ public void entfernen(Kommentar k) {
     e.printStackTrace();
   }
 }
+public void entfernenKommentarVon(Beitrag b) {
+	  Connection con = DBConnectionLocal.connection();
+
+	  try {
+	    Statement stmt = con.createStatement();
+
+	    stmt.executeUpdate("DELETE FROM kommentar " + "WHERE beitragID=" + b.getId());
+	  }
+	  catch (SQLException e) {
+	    e.printStackTrace();
+	  }
+	}
 
 }
 

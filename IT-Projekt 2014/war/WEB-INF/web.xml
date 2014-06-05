@@ -10,6 +10,7 @@
     <servlet-name>loginService</servlet-name>
     <url-pattern>/it_projekt_2014/login</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>verwaltungServlet</servlet-name>
     <servlet-class>de.hdm.itprojekt.server.VerwaltungsklasseImpl</servlet-class>
@@ -18,6 +19,16 @@
   <servlet-mapping>
     <servlet-name>verwaltungServlet</servlet-name>
     <url-pattern>/it_projekt_2014/verwaltung</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>reportGeneratorServlet</servlet-name>
+      <servlet-class>de.hdm.itprojekt.server.report.ReportGeneratorImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+      <servlet-name>reportGeneratorServlet</servlet-name>
+      <url-pattern>/it_projekt_2014/reportgenerator</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

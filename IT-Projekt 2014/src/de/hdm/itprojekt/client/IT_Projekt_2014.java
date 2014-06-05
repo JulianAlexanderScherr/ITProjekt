@@ -26,7 +26,7 @@ public class IT_Projekt_2014 implements EntryPoint {
 		private VerticalPanel funktionenPanel = new VerticalPanel();
 		
 		
-		//Anlegen der erforderlichen Buttons
+		//Anlegen der erforderlichen Buttons für das menuePanel
 		private Button pinnwandButton = new Button("zur Pinnwand");
 		private Button reportButton = new Button("Reportgenerator");
 		
@@ -44,6 +44,12 @@ public class IT_Projekt_2014 implements EntryPoint {
 		private Anchor signOutLink = new Anchor("Ausloggen");
 		private Image icon = new Image("images/smp_icon.png");
 		
+	/**
+	* Da diese Klasse die Implementierung des Interface <code>EntryPoint</code>
+	* zusichert, benötigen wir eine Methode
+	* <code>public void onModuleLoad()</code>. Diese ist das GWT-Pendant der
+	* <code>main()</code>-Methode normaler Java-Applikationen.
+	*/	
 	public void onModuleLoad() {
 		
 		//Die im HTML-code angegebene Positionierung mit dem Basis Panel verbinden
@@ -59,7 +65,7 @@ public class IT_Projekt_2014 implements EntryPoint {
 		reportButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//Erstellen der erforderlichen Instanz
+				//Erstellen der erforderlichen Instanz und an das funktionenPanel anhängen
 				ReportGui rg = new ReportGui();
 				funktionenPanel.clear();
 				funktionenPanel.add(rg);
@@ -71,7 +77,7 @@ public class IT_Projekt_2014 implements EntryPoint {
 		pinnwandButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//Erstellen der erforderlichen Instanz
+				//Erstellen der erforderlichen Instanz und an das funktionenPanel anhängen
 				PinnwandGui pg = new PinnwandGui();
 				funktionenPanel.clear();
 				funktionenPanel.add(pg);
@@ -93,7 +99,7 @@ public class IT_Projekt_2014 implements EntryPoint {
 				menuePanel.add(pinnwandButton);
 				menuePanel.add(reportButton);
 				
-				//Pinnwand-GUI laden
+				//Pinnwand-GUI Instanz erstellen und an das funktionenPanel anhängen
 	        	PinnwandGui pg = new PinnwandGui();
 				funktionenPanel.clear();
 				funktionenPanel.add(pg);

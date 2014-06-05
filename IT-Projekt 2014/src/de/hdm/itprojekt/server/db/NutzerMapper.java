@@ -69,7 +69,7 @@ public class NutzerMapper {
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname FROM nutzer "
+      ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, nickname, email FROM nutzer "
           + "WHERE nutzerID= " + id);
       /*
        * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
@@ -233,6 +233,31 @@ public class NutzerMapper {
   }
 
   
+  // email für Anmeldung überprüfen
+  
+  public boolean pruefenEmail(Nutzer n) {
+	    // DB-Verbindung holen
+	    Connection con = DBConnectionLocal.connection();
+
+	    try {
+	      // Leeres SQL-Statement (JDBC) anlegen
+	      Statement stmt = con.createStatement();
+	      
+	      // Statement ausfüllen und als Query an die DB schicken
+	      ResultSet rs = stmt.executeQuery("SELECT email FROM nutzer "
+	          + "WHERE email= " + n.geteMail());
+	      
+	      if (rs == null) {
+	    	  return false;
+	      }
+	    
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	      
+	    }
+	    return true;
+  }
   /**
    * Einfügen eines <code>Nutzer</code>-Objekts in die Datenbank. Dabei wird
    * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.

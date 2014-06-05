@@ -46,22 +46,6 @@ body {
     padding: 20px;
 }
 
-.cellList {
-    background: #F0F0F0;
-    height: 120px;
-    margin-top: 20px;
-    overflow: auto;
-    width: 303px;
-}
-
-.cellList div div div {
-    padding: 10px;
-}
-
-.cellList div div div:selection {
-    padding: 20px;
-}
-
 #footer {
     background: url("images/triangular_blue.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
     border-radius: 0 0 5px 5px;
@@ -163,7 +147,7 @@ body {
     width: 67px;
 }
 
-.verwaltungsPanel .gwt-Button, .beitragsPanel .gwt-Button.neuerBeitrag {
+.verwaltungsPanel .gwt-Button, .beitragsPanel .gwt-Button.neuerBeitrag, .reportMenuePanel .gwt-Button.erstellenReport {
     background: #32849B;
     color: #FFFFFF;
     border: none;
@@ -176,6 +160,26 @@ body {
     margin-top: -4px;
     padding: 4px 5px;
     width: 193px;
+}
+
+.reportMenuePanel {
+    border: 1px solid #A0A0A0;
+    padding: 20px;
+    width: 350px;
+}
+
+.reportAusgabePanel {
+    border: 1px solid #A0A0A0;
+    margin-left: 10px;
+    padding: 20px;
+    width: 599px;
+}
+
+.reportMenuePanel .report {
+    background: none repeat scroll 0 0 #FFFFFF;
+    margin-top: -34px;
+    padding: 5px;
+    width: 37px;
 }
 
 #wrapper {
@@ -200,6 +204,13 @@ h1 {
     margin-top: 20px;
     width: 303px;
 }
+
+.listBoxReport{
+    border: 1px solid #A0A0A0;
+    margin-top: 20px;
+    width: 170px;
+}
+
 
 .gwt-ListBox option {
     cursor: pointer;

@@ -21,7 +21,7 @@ import de.hdm.itprojekt.shared.bo.Pinnwand;
 
 
 /**
- * Das ist die eigentliche Applikationslogik... hier wird verknüpft und dargestellt !!!!
+ * Das ist die eigentliche Applikationslogik... hier wird verknï¿½pft und dargestellt !!!!
  * @author Thies, Schwab
  *
  */
@@ -29,7 +29,7 @@ public class VerwaltungsklasseImpl extends RemoteServiceServlet
 implements Verwaltungsklasse{
 	
 	/**
-	 * serialVersionUID wird benötigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
+	 * serialVersionUID wird benï¿½tigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
 	 * </br>weitere Informationen zu Serializable siehe <a href="http://www.zdnet.de/39154667/wissenswertes-zur-serialisierung-von-java-objekten/">Link</a>
 	 */
 	private static final long serialVersionUID = 1L;
@@ -83,7 +83,7 @@ implements Verwaltungsklasse{
      * ist ein solcher No-Argument-Konstruktor anzulegen. Ein Aufruf eines anderen
      * Konstruktors ist durch die Client-seitige Instantiierung durch
      * <code>GWT.create(Klassenname.class)</code> nach derzeitigem Stand nicht
-     * möglich.
+     * mï¿½glich.
      * </p>
      * <p>
      * Es bietet sich also an, eine separate Instanzenmethode zu erstellen, die
@@ -102,13 +102,13 @@ implements Verwaltungsklasse{
 	
 	/**
 	 *
-     * Initialsierungsmethode für die Datenbank-Mapper
+     * Initialsierungsmethode fï¿½r die Datenbank-Mapper
      * 
      * @throws IllegalArgumentException
 	 */
 	public void init() throws IllegalArgumentException {
 	    /*
-	     * Ganz wesentlich ist, dass die BankAdministration einen vollständigen Satz
+	     * Ganz wesentlich ist, dass die BankAdministration einen vollstï¿½ndigen Satz
 	     * von Mappern besitzt, mit deren Hilfe sie dann mit der Datenbank
 	     * kommunizieren kann.
 	     */
@@ -122,7 +122,7 @@ implements Verwaltungsklasse{
 	
 	
 	/**
-	 * Eine Pinnwand anlegen, bzw mit einem Nutzer verknüpfen
+	 * Eine Pinnwand anlegen, bzw mit einem Nutzer verknï¿½pfen
 	 * @param nutzer
 	 * @throws IllegalArgumentException
 	 */
@@ -172,17 +172,20 @@ implements Verwaltungsklasse{
 	}
 
 	/**
-	 * Einen Beitrag löschen
+	 * Einen Beitrag lï¿½schen
 	 * @param beitrag
 	 * @throws IllegalArgumentException
 	 */
 	public void loeschenBeitrag(Beitrag beitrag) throws IllegalArgumentException {
-		//zuerst alle Likes und Kommentare löschen
+		//zuerst alle Likes und Kommentare lÃ¶schen
+		this.lMapper.entfernenLikeVon(beitrag);
+		this.kMapper.entfernenKommentarVon(beitrag);
+		this.bMapper.entfernen(beitrag);
 		
 	}
 
 	/**
-	 * Einen Beitrag liken (Kommentare können nicht geliked oder kommentiert werden)
+	 * Einen Beitrag liken (Kommentare kï¿½nnen nicht geliked oder kommentiert werden)
 	 * @param beitrag
 	 * @param nutzer
 	 * @throws IllegalArgumentException
@@ -208,7 +211,7 @@ implements Verwaltungsklasse{
 	}
 
 	/**
-	 * Auslesen aller Nutzer. Zurückgegeben wird ein Vector der alle Nutzer Objekte der Datenbank enthält
+	 * Auslesen aller Nutzer. Zurï¿½ckgegeben wird ein Vector der alle Nutzer Objekte der Datenbank enthï¿½lt
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
@@ -217,7 +220,7 @@ implements Verwaltungsklasse{
 	}
 
 	/**
-	 * Auslesen aller Likes. Zurückgegeben wird ein Vector der alle Like Objekte der Datenbank enthält
+	 * Auslesen aller Likes. Zurï¿½ckgegeben wird ein Vector der alle Like Objekte der Datenbank enthï¿½lt
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
@@ -226,7 +229,7 @@ implements Verwaltungsklasse{
 	}
 
 	/**
-	 * Auslesen aller Beiträge. Zurückgegeben wird ein Vector der alle Beitrags Objekte der Datenbank enthält
+	 * Auslesen aller Beitrï¿½ge. Zurï¿½ckgegeben wird ein Vector der alle Beitrags Objekte der Datenbank enthï¿½lt
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
@@ -235,7 +238,7 @@ implements Verwaltungsklasse{
 	}
 
 	/**
-	 * Auslesen aller Abonnenten. Zurückgegeben wird ein Vector der alle Abonnement Objekte der Datenbank enthält
+	 * Auslesen aller Abonnenten. Zurï¿½ckgegeben wird ein Vector der alle Abonnement Objekte der Datenbank enthï¿½lt
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
@@ -244,7 +247,7 @@ implements Verwaltungsklasse{
 	}
 	
 	/**
-	 * Auslesen eines einzelnen Beitrag. Zurückgegeben wird das Beitrags Objekt
+	 * Auslesen eines einzelnen Beitrag. Zurï¿½ckgegeben wird das Beitrags Objekt
 	 * @param id
 	 * @return
 	 * @throws IllegalArgumentException
@@ -332,5 +335,35 @@ implements Verwaltungsklasse{
 	 */
 	public Like getLike(int id) throws IllegalArgumentException {
 		return this.lMapper.suchenID(id);
+	}
+
+	/**
+	 * Ausgeben aller BeitrÃ¤ge fÃ¼r einen Nutzer
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Beitrag> getBeitraegeByNutzer(Nutzer n) throws IllegalArgumentException {
+		return this.bMapper.suchenNutzer(n);
+	}
+
+	/**
+	 * Ausgeben aller Kommentare fÃ¼r einen Beitrag
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Kommentar> getKommentarByBeitrag(Beitrag b) throws IllegalArgumentException {
+		return this.kMapper.suchenBeitrag(b);
+	}
+
+	/**
+	 * Ausgeben aller Likes fÃ¼r einen Beitrag
+	 * @param b
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Like> getLikeByBeitrag(Beitrag b) throws IllegalArgumentException {
+		return this.lMapper.suchenBeitrag(b);
 	}
 }

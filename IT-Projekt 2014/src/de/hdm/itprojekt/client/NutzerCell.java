@@ -14,10 +14,13 @@ public class NutzerCell extends AbstractCell<Nutzer> {
 	        return;
 	      }
 
-	      sb.appendHtmlConstant("<div>");
+	      sb.appendHtmlConstant("<div><strong>");
 	      sb.appendEscaped(value.getVorname());
 	      sb.appendHtmlConstant(" ");
 	      sb.appendEscaped(value.getNachname());
+	      sb.appendHtmlConstant("</strong> (");
+	      sb.appendEscaped(value.getNickname());
+	      sb.appendHtmlConstant(")");
 	      sb.appendHtmlConstant("</div>");
 		
 	}

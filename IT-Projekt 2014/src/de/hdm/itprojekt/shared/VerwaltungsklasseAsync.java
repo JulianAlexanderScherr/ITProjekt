@@ -6,7 +6,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.itprojekt.shared.bo.Abonnement;
 import de.hdm.itprojekt.shared.bo.Beitrag;
-import de.hdm.itprojekt.shared.bo.BusinessObject;
 import de.hdm.itprojekt.shared.bo.Kommentar;
 import de.hdm.itprojekt.shared.bo.Like;
 import de.hdm.itprojekt.shared.bo.Nutzer;
@@ -15,10 +14,10 @@ import de.hdm.itprojekt.shared.bo.Pinnwand;
 
 /**
  * Asynchrone KLasse von {@link Verwaltungsklasse}.
- * Für die GWT RPC (Remote Procedure Call) wird ein synchrones und ein asynchrones Interface 
- * benötigt um zwischen Client und Server kommunizieren zu können 
+ * Fï¿½r die GWT RPC (Remote Procedure Call) wird ein synchrones und ein asynchrones Interface 
+ * benï¿½tigt um zwischen Client und Server kommunizieren zu kï¿½nnen 
  * </br>
- * Weitere Informationen zu GWT RPC (recht einfache Erklärung): Theorie: https://www.youtube.com/watch?v=9FZt7EbMp_E#t=439
+ * Weitere Informationen zu GWT RPC (recht einfache Erklï¿½rung): Theorie: https://www.youtube.com/watch?v=9FZt7EbMp_E#t=439
  * </br>
  * Praxis: https://www.youtube.com/watch?v=3Ak5xVrvh-E
  * @author Martin
@@ -69,5 +68,12 @@ public interface VerwaltungsklasseAsync {
 	void getAbonnement(int id, AsyncCallback<Abonnement> callback);
 
 	void getLike(int id, AsyncCallback<Like> callback);
+
+	void getBeitraegeByNutzer(Nutzer n, AsyncCallback<Vector<Beitrag>> callback);
+
+	void getKommentarByBeitrag(Beitrag b,
+			AsyncCallback<Vector<Kommentar>> callback);
+
+	void getLikeByBeitrag(Beitrag b, AsyncCallback<Vector<Like>> callback);
 
 }

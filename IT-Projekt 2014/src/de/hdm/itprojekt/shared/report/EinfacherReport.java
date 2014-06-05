@@ -1,4 +1,4 @@
-package de.hdm.itprojekt.shared.reportGenerator;
+package de.hdm.itprojekt.shared.report;
 
 import java.util.Vector;
 
@@ -8,41 +8,45 @@ import java.util.Vector;
  * <p>
  * Ein einfacher Report, der neben den Informationen der Superklasse <code>
  * Report</code> eine Tabelle mit "Positionsdaten" aufweist. Die Tabelle greift
- * auf zwei Hilfsklassen namens <code>Reihe</code> und <code>Zeile</code> zurück.
+ * auf zwei Hilfsklassen namens <code>Spalte</code> und <code>Zeile</code> zurï¿½ck.
  * 
  * 
- * @see Reihe
+ * @see Spalte
  * @see Zeile
  * @author Stefan Oberrieder vgl. Peter Thies
  */
 public abstract class EinfacherReport extends Report {
 
 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+/**
  * Tabelle mit den Positionsdaten welche im <code>Vector</code> abgelegt werden.
  */
-private Vector<Reihe> tabelle = new Vector<Reihe>();
+private Vector<Zeile> tabelle = new Vector<Zeile>();
 
 /**
- * Hinzufügen einer Zeile.
+ * Hinzufï¿½gen einer Zeile.
  * 
  * @param r die neue Zeile
  */
 
-public void hinzufuegenReihe (Reihe r){
+public void hinzufuegenZeile (Zeile r){
 	this.tabelle.addElement(r);
 }
 /**
- * löschen einer Zeile
- * @param r die zu löschende Zeile.
+ * lï¿½schen einer Zeile
+ * @param r die zu lï¿½schende Zeile.
  */
-public void loescheReihe (Reihe r){
+public void loescheZeile (Zeile r){
 	this.tabelle.removeElement(r);
 }
 /** 
  * Auslesen aller Positionsdaten aus der <code>tabelle</code>
  * @return die Tabelle mit den Positionsdaten.
  */
-public Vector<Reihe> getReihe(){
+public Vector<Zeile> getZeile(){
 	return this.tabelle;
 }
 

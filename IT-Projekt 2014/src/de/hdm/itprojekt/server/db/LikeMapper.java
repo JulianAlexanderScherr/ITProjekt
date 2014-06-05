@@ -3,6 +3,7 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
+import de.hdm.itprojekt.shared.bo.Beitrag;
 import de.hdm.itprojekt.shared.bo.Like;
 
 
@@ -94,6 +95,46 @@ public class LikeMapper {
 
     return null;
   }
+
+  
+  public Vector<Like> suchenBeitrag(Beitrag b) {
+	    // DB-Verbindung holen
+	    Connection con = DBConnectionLocal.connection();
+
+	 // Ergebnisvektor vorbereiten
+	    Vector<Like> result = new Vector<Like>();
+	    
+	    try {
+	      // Leeres SQL-Statement (JDBC) anlegen
+	      Statement stmt = con.createStatement();
+
+	      // Statement ausfüllen und als Query an die DB schicken
+	      ResultSet rs = stmt.executeQuery("SELECT likeID, nutzerID, erstellungszeitpunkt FROM Like "
+	          + "WHERE beitragID= " + b.getId() );
+
+	      /*
+	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
+	       * werden. Prüfe, ob ein Ergebnis vorliegt.
+	       */
+	      if (rs.next()) {
+	        // Ergebnis-Tupel in Objekt umwandeln
+	    	Like l = new Like();
+	        l.setId(rs.getInt("likeID"));
+	        l.setNutzerID(rs.getInt("nutzerID"));
+	        l.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
+	        
+	     // Hinzufügen des neuen Objekts zum Ergebnisvektor
+	        result.addElement(l);
+	        
+	      }
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	    }
+
+	    // Ergebnisvektor zurückgeben
+	    return result;
+	  }  
 
   
   /**
@@ -206,6 +247,19 @@ public void entfernen(Like l) {
     e.printStackTrace();
   }
 }
+
+public void entfernenLikeVon(Beitrag b) {
+	  Connection con = DBConnectionLocal.connection();
+
+	  try {
+	    Statement stmt = con.createStatement();
+
+	    stmt.executeUpdate("DELETE FROM like " + "WHERE beitragID=" + b.getId());
+	  }
+	  catch (SQLException e) {
+	    e.printStackTrace();
+	  }
+	}
 
 }
 

@@ -1,9 +1,9 @@
-package de.hdm.itprojekt.shared.reportGenerator;
+package de.hdm.itprojekt.shared.report;
 
 import java.io.Serializable;
 
 /**
- * Die Klasse stellt einzelne Absätze dar die als String gespeichert werden.
+ * Die Klasse stellt einzelne Absï¿½tze dar die als String gespeichert werden.
  * @author Stefan
  *
  */
@@ -23,15 +23,15 @@ private String text = "";
 /**
  * <p>
  * Serialisierbare Klassen, die mittels GWT-RPC transportiert werden sollen,
- * müssen einen No-Argument-Konstruktor besitzen. Ist kein Konstruktor
- * explizit angegeben, so existiert ini Java-Klassen implizit der
+ * mï¿½ssen einen No-Argument-Konstruktor besitzen. Ist kein Konstruktor
+ * explizit angegeben, so existiert in Java-Klassen implizit der
  * Default-Konstruktor, der dem No-Argument-Konstruktor entspricht.
  * </p>
  * <p>
  * Besitzt eine Klasse mind. einen explizit implementierten Konstruktor, so
  * gelten nur diese explizit implementierten Konstruktoren. Der
  * Default-Konstruktor gilt dann nicht. Wenn wir in einer solchen Situation
- * aber dennoch einen No-Argument-Konstruktor benötigen, müssen wir diesen wie
+ * aber dennoch einen No-Argument-Konstruktor benï¿½tigen, mï¿½ssen wir diesen wie
  * in diesem Beispiel explizit implementieren.
  * </p>
  * 
@@ -43,8 +43,8 @@ public EinfacherParagraph(){
 	
 }
 /**
- * Dieser Konstruktor ermöglicht es, bereits bei Instantiierung von
- * <code>EinfacherParagraph</code>-Objekten deren Inhalt angeben zu können.
+ * Dieser Konstruktor ermï¿½glicht es, bereits bei Instantiierung von
+ * <code>EinfacherParagraph</code>-Objekten deren Inhalt angeben zu kï¿½nnen.
  * 
  * @param value der Inhalt des Absatzes
  * @see #EinfacherParagraph()
@@ -62,7 +62,7 @@ public String getText(){
 	return this.text;
 }
 /**
- * Überschreiben des Inhalts
+ * ï¿½berschreiben des Inhalts
  * @param text der neue Inhalt
  */
 public void setText( String text){
@@ -74,12 +74,7 @@ public void setText( String text){
  */
 
 public String toString(){
-<<<<<<< HEAD
 	return this.text;
-=======
-	return text;
-	
->>>>>>> refs/remotes/origin/MartinSchwab
 }
 
 }

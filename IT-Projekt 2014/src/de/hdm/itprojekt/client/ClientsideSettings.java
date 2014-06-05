@@ -3,13 +3,16 @@ package de.hdm.itprojekt.client;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.itprojekt.shared.CommonSettings;
+import de.hdm.itprojekt.shared.ReportGenerator;
+import de.hdm.itprojekt.shared.ReportGeneratorAsync;
 import de.hdm.itprojekt.shared.Verwaltungsklasse;
 import de.hdm.itprojekt.shared.VerwaltungsklasseAsync;
 
 /**
- * Klasse mit Eigenschaften und Diensten, die für alle Client-seitigen Klassen
+ * Klasse mit Eigenschaften und Diensten, die fï¿½r alle Client-seitigen Klassen
  * relevant sind.
  * @author Thies, Schwab
  *
@@ -17,6 +20,8 @@ import de.hdm.itprojekt.shared.VerwaltungsklasseAsync;
 public class ClientsideSettings extends CommonSettings {
 	
 	private static VerwaltungsklasseAsync verwaltung = null;
+	
+	private static ReportGeneratorAsync reportGenerator = null;
 	
 
 	  /**
@@ -60,21 +65,21 @@ public class ClientsideSettings extends CommonSettings {
 	   * <h2>HINWEIS:</h2>
 	   * <p>
 	   * Beachten Sie, dass Sie den auszugebenden Log nun nicht mehr durch
-	   * bedarfsweise Einfügen und Auskommentieren etwa von
-	   * <code>System.out.println(...);</code> steuern. Sie belassen künftig
-	   * sämtliches Logging im Code und können ohne abermaliges Kompilieren den Log
-	   * Level "von außen" durch die Datei <code>logging.properties</code> steuern.
+	   * bedarfsweise Einfï¿½gen und Auskommentieren etwa von
+	   * <code>System.out.println(...);</code> steuern. Sie belassen kï¿½nftig
+	   * sï¿½mtliches Logging im Code und kï¿½nnen ohne abermaliges Kompilieren den Log
+	   * Level "von auï¿½en" durch die Datei <code>logging.properties</code> steuern.
 	   * Sie finden diese Datei in Ihrem <code>war/WEB-INF</code>-Ordner. Der dort
-	   * standardmäßig vorgegebene Log Level ist <code>WARN</code>. Dies würde
+	   * standardmï¿½ï¿½ig vorgegebene Log Level ist <code>WARN</code>. Dies wï¿½rde
 	   * bedeuten, dass Sie keine <code>INFO</code>-Meldungen wohl aber
 	   * <code>WARN</code>- und <code>SEVERE</code>-Meldungen erhielten. Wenn Sie
-	   * also auch Log des Levels <code>INFO</code> wollten, müssten Sie in dieser
+	   * also auch Log des Levels <code>INFO</code> wollten, mï¿½ssten Sie in dieser
 	   * Datei <code>.level = INFO</code> setzen.
 	   * </p>
 	   * 
 	   * Weitere Infos siehe Dokumentation zu Java Logging.
 	   * 
-	   * @return die Logger-Instanz für die Server-Seite
+	   * @return die Logger-Instanz fï¿½r die Server-Seite
 	   */
 	  public static Logger getLogger() {
 	    return log;
@@ -85,7 +90,7 @@ public class ClientsideSettings extends CommonSettings {
 	   * Anlegen und Auslesen der applikationsweit eindeutigen Social Media Pinnwand - Verwaltung. Diese
 	   * Methode erstellt die Verwaltung, sofern sie noch nicht existiert. Bei
 	   * wiederholtem Aufruf dieser Methode wird stets das bereits zuvor angelegte
-	   * Objekt zurückgegeben.
+	   * Objekt zurï¿½ckgegeben.
 	   * </p>
 	   * 
 	   * <p>
@@ -106,4 +111,41 @@ public class ClientsideSettings extends CommonSettings {
 	 
 	    return verwaltung;
 	  }	
+	  /**
+	   * <p>
+	   * Anlegen und Auslesen des applikationsweit eindeutigen ReportGenerators.
+	   * Diese Methode erstellt den ReportGenerator, sofern dieser noch nicht
+	   * existiert. Bei wiederholtem Aufruf dieser Methode wird stets das bereits
+	   * zuvor angelegte Objekt zurÃƒÂ¼ckgegeben.
+	   * </p>
+	   * 
+	   * <p>
+	   * Der Aufruf dieser Methode erfolgt im Client z.B. durch
+	   * <code>ReportGeneratorAsync reportGenerator = ClientSideSettings.getReportGenerator()</code>
+	   * .
+	   * </p>
+	   */
+	  
+	  public static ReportGeneratorAsync getReportGenerator(){
+		  
+		  if(reportGenerator == null){
+			  reportGenerator = GWT.create(ReportGenerator.class);
+			
+			  final AsyncCallback <Void> initReportGeneratorCallback = new AsyncCallback <Void>(){
+				 public void onFailure(Throwable caught){
+				  ClientsideSettings.getLogger().severe(
+						  "Der ReportGenerator konnte nicht initialisiert werden!");
+			  }
+			 
+			@Override
+			public void onSuccess(Void result) {
+				 ClientsideSettings.getLogger().info(
+						  "Der ReportGenerator wurde initialisiert.");
+			}
+		  };
+		  reportGenerator.init(initReportGeneratorCallback);
+			  }
+	  return reportGenerator;
+		  }
+	  
 }
