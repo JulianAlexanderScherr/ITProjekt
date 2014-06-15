@@ -2,6 +2,8 @@ package de.hdm.itprojekt.shared;
 
 
 
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -36,17 +38,13 @@ public interface ReportGenerator extends RemoteService {
 	 */
 	
 	
-	/**
-	 * Dieser Report zeigt alle Beitr�ge eines Nutzers an.
-	 * @return
-	 * @throws IllegalArgumentException
-	 */
-	public abstract MehrereBeitraegeReport createMehrereBeitraegeReport(Nutzer n) throws IllegalArgumentException;
+	MehrereBeitraegeReport createMehrereBeitraegeReport(Date az, Date ez,
+			Nutzer n, String auswahl);
 	/**
 	 * Erstellen eines <code>MehrerenutzerReport</code>.
 	 * Dieser Report zeigt die Beitr�ge mehrerer Nutzer an
 	 * @param n
 	 * @throws IllegalArgumentException
 	 */
-	public abstract MehrnutzerReport createMehrnutzerReport() throws IllegalArgumentException;
+	public abstract MehrnutzerReport createMehrnutzerReport(Date az, Date ez,String auswahl) throws IllegalArgumentException;
 }

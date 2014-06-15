@@ -5,11 +5,17 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 import de.hdm.itprojekt.shared.bo.Nutzer;
 
+/**
+ * Zur Realisierung der Cell-Lists in GWT wird eine Cell-Klasse benötigt,
+ * welche die Aufgabe hat, den Inhalt der Cell-List darzustellen. 
+ * @author Martin
+ *
+ */
 public class NutzerCell extends AbstractCell<Nutzer> {
 
 	@Override
 	public void render(Context context, Nutzer value, SafeHtmlBuilder sb) {
-		// Value can be null, so do a null check..
+		// der Nutzer könnte null sein, deshalb ein Null-Check
 	      if (value == null) {
 	        return;
 	      }

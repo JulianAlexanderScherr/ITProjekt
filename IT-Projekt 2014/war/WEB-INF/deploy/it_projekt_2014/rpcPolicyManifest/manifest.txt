@@ -1,2 +1,5 @@
 # Module it_projekt_2014
 # RPC service class, partial path of RPC policy file
+de.hdm.itprojekt.shared.LoginService, 5374C74751268380A4B99CEA129A63E9.gwt.rpc
+de.hdm.itprojekt.shared.ReportGenerator, 2BC3195263B6BDC97CF43BEF62CE6A1E.gwt.rpc
+de.hdm.itprojekt.shared.Verwaltungsklasse, D17D2151F70922545CE2BDEB9AA6EC69.gwt.rpc

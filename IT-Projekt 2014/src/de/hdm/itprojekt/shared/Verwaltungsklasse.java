@@ -40,22 +40,20 @@ public interface Verwaltungsklasse extends RemoteService{
 	 */
 	public void init() throws IllegalArgumentException;
 	
-	
 	/**
-	 * Eine Pinnwand anlegen, bzw mit einem Nutzer verkn�pfen
+	 * Einen Nutzer anlegen
 	 * @param nutzer
 	 * @throws IllegalArgumentException
 	 */
-	public void setPinnwand(Nutzer nutzer) throws IllegalArgumentException;
-	
-	
+	public void createNutzer(Nutzer nutzer) throws IllegalArgumentException;
+		
 	/**
 	 * Kommentartext erstellen und einem Beitrag zuweisen
 	 * @param text
 	 * @param beitrag
 	 * @throws IllegalArgumentException
 	 */
-	public void setKommentar(String text, Beitrag beitrag) throws IllegalArgumentException;
+	public void createKommentar(Kommentar k) throws IllegalArgumentException;
 	
 	
 	/**
@@ -63,7 +61,7 @@ public interface Verwaltungsklasse extends RemoteService{
 	 * @param text
 	 * @throws IllegalArgumentException
 	 */
-	public void setBeitrag(String text) throws IllegalArgumentException;
+	public void createBeitrag(Beitrag b) throws IllegalArgumentException;
 	
 	
 	/**
@@ -71,7 +69,21 @@ public interface Verwaltungsklasse extends RemoteService{
 	 * @param abonnement
 	 * @throws IllegalArgumentException
 	 */
-	public void setAbonnement(Abonnement abonnement) throws IllegalArgumentException;
+	public void createAbonnement(Abonnement a) throws IllegalArgumentException;
+	
+	/**
+	 * Überprüfen ob E-Mail Adresse in der Datenbank verfügbar ist
+	 * @param mail
+	 * @throws IllegalArgumentException
+	 */
+	public Nutzer checkEmail(String mail) throws IllegalArgumentException;
+	
+	/**
+	 * Abonnement loeschen
+	 * @param kommentar
+	 * @throws IllegalArgumentException
+	 */
+	public void loeschenAbonnement(int pID, int nID) throws IllegalArgumentException;
 	
 	
 	/**
@@ -79,7 +91,7 @@ public interface Verwaltungsklasse extends RemoteService{
 	 * @param kommentar
 	 * @throws IllegalArgumentException
 	 */
-	public void loeschenKommentar(Kommentar kommentar) throws IllegalArgumentException;
+	public void loeschenKommentar(Kommentar k) throws IllegalArgumentException;
 	
 	
 	/**
@@ -223,6 +235,30 @@ public interface Verwaltungsklasse extends RemoteService{
 	public Abonnement getAbonnement(int id) throws IllegalArgumentException;
 	
 	/**
+	 * Ausgeben aller Abonnenten anhand eines Nutzers
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Abonnement> getAbonnementByNutzer(Nutzer n) throws IllegalArgumentException;
+	
+	/**
+	 * Gibt einen Vector mit Nutzern aus, welche vom Nutzer abonniert wurden
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Nutzer> getAbonnementNutzer(Nutzer n) throws IllegalArgumentException;
+	
+	/**
+	 * Ausgeben der Beiträge der Abonnenten und des Nutzers
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Beitrag> getAlleBeitraegeByNutzer(Nutzer n) throws IllegalArgumentException;
+	
+	/**
 	 * Ausgeben eines Like-Objektes anhand der ID
 	 * @param id
 	 * @return
@@ -237,4 +273,43 @@ public interface Verwaltungsklasse extends RemoteService{
 	 * @throws IllegalArgumentException
 	 */
 	public Vector<Like> getLikeByBeitrag(Beitrag b) throws IllegalArgumentException;
+	
+	/**
+	 * Beitrag ändern
+	 * @param b
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public void updateBeitrag(Beitrag b) throws IllegalArgumentException;
+	
+	/**
+	 * Nutzer ändern
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public void updateNutzer(Nutzer n) throws IllegalArgumentException;
+	
+	/**
+	 * Kommentar ändern
+	 * @param k
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public void updateKommentar(Kommentar k) throws IllegalArgumentException;
+	
+	/**
+	 * Sortieren eines Beitragsvectors anhand des Erstellungszeitpunktes
+	 * @param vb
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Beitrag> sortBeitraege(Vector<Beitrag> vb) throws IllegalArgumentException;
+	
+	/**
+	 * Holt den aktuell eingeloggten Nutzer
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public String getCurrentUserMail() throws IllegalArgumentException;
 }

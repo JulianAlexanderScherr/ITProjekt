@@ -2,6 +2,9 @@ package de.hdm.itprojekt.server;
 
 import java.util.Vector;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itprojekt.server.db.AbonnementMapper;
@@ -13,7 +16,6 @@ import de.hdm.itprojekt.server.db.PinnwandMapper;
 import de.hdm.itprojekt.shared.Verwaltungsklasse;
 import de.hdm.itprojekt.shared.bo.Abonnement;
 import de.hdm.itprojekt.shared.bo.Beitrag;
-import de.hdm.itprojekt.shared.bo.BusinessObject;
 import de.hdm.itprojekt.shared.bo.Kommentar;
 import de.hdm.itprojekt.shared.bo.Like;
 import de.hdm.itprojekt.shared.bo.Nutzer;
@@ -21,7 +23,7 @@ import de.hdm.itprojekt.shared.bo.Pinnwand;
 
 
 /**
- * Das ist die eigentliche Applikationslogik... hier wird verkn�pft und dargestellt !!!!
+ * Implementationsklasse der Verwaltung. Hier werden die benötigten serverseitigen Methoden realisiert.
  * @author Thies, Schwab
  *
  */
@@ -29,7 +31,7 @@ public class VerwaltungsklasseImpl extends RemoteServiceServlet
 implements Verwaltungsklasse{
 	
 	/**
-	 * serialVersionUID wird ben�tigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
+	 * serialVersionUID wird benötigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
 	 * </br>weitere Informationen zu Serializable siehe <a href="http://www.zdnet.de/39154667/wissenswertes-zur-serialisierung-von-java-objekten/">Link</a>
 	 */
 	private static final long serialVersionUID = 1L;
@@ -120,14 +122,17 @@ implements Verwaltungsklasse{
 	    this.pMapper = PinnwandMapper.pinnwandMapper();
 	  }
 	
-	
 	/**
-	 * Eine Pinnwand anlegen, bzw mit einem Nutzer verkn�pfen
+	 * Einen Nutzer anlegen
 	 * @param nutzer
 	 * @throws IllegalArgumentException
 	 */
-	public void setPinnwand(Nutzer nutzer) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	public void createNutzer(Nutzer nutzer) throws IllegalArgumentException {
+		this.nMapper.anlegen(nutzer);
+		Pinnwand p = new Pinnwand();
+		p.setId(nutzer.getId());
+		this.pMapper.anlegen(p);
+		
 	}
 
 	/**
@@ -136,9 +141,8 @@ implements Verwaltungsklasse{
 	 * @param beitrag
 	 * @throws IllegalArgumentException
 	 */
-	public void setKommentar(String text, Beitrag beitrag) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+	public void createKommentar(Kommentar k) throws IllegalArgumentException {
+		this.kMapper.anlegen(k);
 	}
 
 	/**
@@ -146,23 +150,21 @@ implements Verwaltungsklasse{
 	 * @param text
 	 * @throws IllegalArgumentException
 	 */
-	public void setBeitrag(String text) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+	public void createBeitrag(Beitrag b) throws IllegalArgumentException {
+		this.bMapper.anlegen(b);
 	}
 
 	/**
-	 * Setzen eines Abonnements
+	 * Abonnement erstellen
 	 * @param abonnement
 	 * @throws IllegalArgumentException
 	 */
-	public void setAbonnement(Abonnement abonnement) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+	public void createAbonnement(Abonnement abonnement) throws IllegalArgumentException {
+		this.aMapper.anlegen(abonnement);
 	}
 
 	/**
-	 * Kommentar loeschen
+	 * Kommentar löschen
 	 * @param kommentar
 	 * @throws IllegalArgumentException
 	 */
@@ -172,7 +174,7 @@ implements Verwaltungsklasse{
 	}
 
 	/**
-	 * Einen Beitrag l�schen
+	 * Einen Beitrag löschen
 	 * @param beitrag
 	 * @throws IllegalArgumentException
 	 */
@@ -211,7 +213,7 @@ implements Verwaltungsklasse{
 	}
 
 	/**
-	 * Auslesen aller Nutzer. Zur�ckgegeben wird ein Vector der alle Nutzer Objekte der Datenbank enth�lt
+	 * Auslesen aller Nutzer. Zurückgegeben wird ein Vector der alle Nutzer Objekte der Datenbank enthält
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
@@ -264,7 +266,6 @@ implements Verwaltungsklasse{
 	 */
 	public Nutzer getNutzerByID(int id) throws IllegalArgumentException {
 		return nMapper.suchenID(id);
-		
 	}
 
 	/**
@@ -326,6 +327,17 @@ implements Verwaltungsklasse{
 	public Abonnement getAbonnement(int id) throws IllegalArgumentException {
 		return this.aMapper.suchenID(id);
 	}
+	
+
+	/**
+	 * Ausgeben aller Abonnenten anhand eines Nutzers
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Abonnement> getAbonnementByNutzer(Nutzer n) throws IllegalArgumentException {
+		return this.aMapper.suchenNutzer(n);
+	}
 
 	/**
 	 * Ausgeben eines Like-Objektes anhand der ID
@@ -365,5 +377,126 @@ implements Verwaltungsklasse{
 	 */
 	public Vector<Like> getLikeByBeitrag(Beitrag b) throws IllegalArgumentException {
 		return this.lMapper.suchenBeitrag(b);
+	}
+
+	/**
+	 * Ausgeben der Beiträge der Abonnenten und des Nutzers
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Beitrag> getAlleBeitraegeByNutzer(Nutzer currentNutzer) throws IllegalArgumentException {
+		Vector<Beitrag> alleBeitraegeCurrentNutzer = new Vector<Beitrag>();
+		
+		for(Abonnement a : this.aMapper.suchenNutzer(currentNutzer)){
+			for(Beitrag b : this.getBeitraegeByNutzer(this.nMapper.suchenID(a.getNutzerID()))){
+				alleBeitraegeCurrentNutzer.add(b);
+			}
+		}
+		
+		for(Beitrag bn : this.getBeitraegeByNutzer(currentNutzer)){
+			alleBeitraegeCurrentNutzer.add(bn);
+		}
+
+		return alleBeitraegeCurrentNutzer;
+	}
+	
+
+	/**
+	 * Gibt einen Vector mit Nutzern aus, welche vom Nutzer abonniert wurden
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Nutzer> getAbonnementNutzer(Nutzer n) throws IllegalArgumentException {
+		Vector<Nutzer> vn = new Vector<Nutzer>();
+		for(Abonnement a : this.aMapper.suchenNutzer(n)){
+			vn.add(this.nMapper.suchenID(a.getNutzerID()));
+		}
+		return vn;
+	}
+
+	/**
+	 * Abonnement loeschen
+	 * @param kommentar
+	 * @throws IllegalArgumentException
+	 */
+	public void loeschenAbonnement(int pID, int nID) throws IllegalArgumentException {
+		this.aMapper.entfernen(this.aMapper.suchenNutzerIDPinnwandID(pID, nID));		
+	}
+
+	/**
+	 * Beitrag ändern
+	 * @param b
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public void updateBeitrag(Beitrag b) throws IllegalArgumentException {
+		this.bMapper.aendern(b);
+	}
+
+	/**
+	 * Nutzer ändern
+	 * @param n
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public void updateNutzer(Nutzer n) throws IllegalArgumentException {
+		this.nMapper.aendern(n);
+	}
+	
+	/**
+	 * Kommentar ändern
+	 * @param k
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public void updateKommentar(Kommentar k) throws IllegalArgumentException {
+		this.kMapper.aendern(k);		
+	}
+
+	/**
+	 * Sortieren eines Beitragsvectors anhand des Erstellungszeitpunktes
+	 * @param vb
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Vector<Beitrag> sortBeitraege(Vector<Beitrag> vb) throws IllegalArgumentException {
+		Beitrag temp = new Beitrag();
+		
+		//Bubble Sort
+		for(int i=1; i<vb.size(); i++) {
+			for(int j=0; j<vb.size()-i; j++) {
+				if(vb.elementAt(j).getErstellungszeitpunkt().getTime() < vb.elementAt(j+1).getErstellungszeitpunkt().getTime()) {
+					temp = vb.elementAt(j);
+					vb.setElementAt(vb.elementAt(j+1), j);
+					vb.setElementAt(temp, j+1);
+				}
+				
+			}
+		}
+		
+		return vb;
+	}
+
+	/**
+	 * Überprüfen ob E-Mail Adresse in der Datenbank verfügbar ist
+	 * @param mail
+	 * @throws IllegalArgumentException
+	 */
+	public Nutzer checkEmail(String mail) throws IllegalArgumentException {
+		return this.nMapper.pruefenEmail(mail);
+	}
+
+	/**
+	 * Holt den aktuell eingeloggten Nutzer
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public String getCurrentUserMail() throws IllegalArgumentException {
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		
+		return user.getEmail();
 	}
 }

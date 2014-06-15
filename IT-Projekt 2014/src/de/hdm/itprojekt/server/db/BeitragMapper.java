@@ -3,21 +3,24 @@ package de.hdm.itprojekt.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.itprojekt.server.db.DBConnectionLocal;
+import de.hdm.itprojekt.server.db.DBConnection;
 import de.hdm.itprojekt.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
- * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * gestellt, mit deren Hilfe z.B. Objekte gesucht, angelegt, geändert,
+ * gelöscht und geliked werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
+ * 
+ *  @author Thies, Schrempf, Scherr
  */
 public class BeitragMapper {
 
   /**
    * Die Klasse BeitragMapper wird nur einmal instantiiert. Man spricht hierbei
-   * von einem sogenannten <b>Singleton</b>.
+   * von einem sogenannten <b>Singleton</b>. Das Singleton ist also ein Entwurfstmuster welches sicherstellt,
+   * dass nur eine Instanz eines Objekts existiert.
    * <p>
    * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
    * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
@@ -61,14 +64,14 @@ public class BeitragMapper {
    */
   public Beitrag suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT beitragID, text, erstellungszeitpunkt FROM beitrag "
+      ResultSet rs = stmt.executeQuery("SELECT beitragID, nutzerID, text, erstellungszeitpunkt FROM beitrag "
           + "WHERE beitragID= " + id );
 
       /*
@@ -76,9 +79,10 @@ public class BeitragMapper {
        * werden. Prüfe, ob ein Ergebnis vorliegt.
        */
       if (rs.next()) {
-        // Ergebnis-Tupel in Objekt umwandeln
+    	// Datenbankergebnis wird als Ergebnis-Tupel zusammengefasst und in Objekt umgewandelt
         Beitrag b = new Beitrag();
-        b.setId(rs.getInt("id"));
+        b.setId(rs.getInt("beitragID"));
+        b.setNutzerID(rs.getInt("nutzerID"));
         b.setBeitragstext(rs.getString("text"));
         b.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
         return b;
@@ -92,10 +96,17 @@ public class BeitragMapper {
     return null;
   }
 
+  /**
+   * Auslesen aller Beiträge eines Nutzers.
+   * 
+   * @return Ein Vektor mit Beitrags-Objekten, die sämtliche Beiträge des gleichen Nutzers
+   *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
+   *         oder ggf. auch leerer Vektor zurückgeliefert.
+   */
   
   public Vector<Beitrag> suchenNutzer(Nutzer n) {
 	    // DB-Verbindung holen
-	    Connection con = DBConnectionLocal.connection();
+	    Connection con = DBConnection.connection();
 
 	    // Ergebnisvektor vorbereiten
 	    Vector<Beitrag> result = new Vector<Beitrag>();
@@ -105,28 +116,26 @@ public class BeitragMapper {
 	      Statement stmt = con.createStatement();
 
 	      // Statement ausfüllen und als Query an die DB schicken
-	      ResultSet rs = stmt.executeQuery("SELECT beitragID, text, erstellungszeitpunkt FROM beitrag "
-	          + "WHERE nutzerID= " + n.getId() );
+	      ResultSet rs = stmt.executeQuery("SELECT beitragID, text, nutzerID, erstellungszeitpunkt FROM beitrag "
+	          + "WHERE nutzerID= " + n.getId());
 
-	      /*
-	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
-	       * werden. Prüfe, ob ein Ergebnis vorliegt.
-	       */
-	      if (rs.next()) {
-	        // Ergebnis-Tupel in Objekt umwandeln
+
+	      while (rs.next()) {
+	        // Datenbankergebnis wird als Ergebnis-Tupel zusammengefasst, und in Objekte umgewandelt 
 	        Beitrag b = new Beitrag();
-	        b.setId(rs.getInt("id"));
+	        b.setId(rs.getInt("beitragID"));
 	        b.setBeitragstext(rs.getString("text"));
+	        b.setNutzerID(rs.getInt("nutzerID"));
 	        b.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
 	        
-	     // Hinzufügen des neuen Objekts zum Ergebnisvektor
+	        // Hinzufügen des neuen Objekts zum Ergebnisvektor
 	        result.addElement(b);
 	      }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
-
+        // Ergebnisvektor zurückgeben
 	    return result;
 	  }
   /**
@@ -137,7 +146,7 @@ public class BeitragMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Beitrag> suchenAlle() {
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Beitrag> result = new Vector<Beitrag>();
@@ -145,10 +154,9 @@ public class BeitragMapper {
     try {
       Statement stmt = con.createStatement();
 
-      ResultSet rs = stmt.executeQuery("SELECT beitragID, text, erstellungszeitpunkt FROM beitrag "
-          + " ORDER BY erstellungszeitpunkt");
+      ResultSet rs = stmt.executeQuery("SELECT beitragID, text, erstellungszeitpunkt FROM beitrag ");
 
-      // Für jeden Eintrag im Suchergebnis wird nun ein Beitrag-Objekt erstellt.
+      // Datenbankergebnis wird als Ergebnis-Tupel zusammengefasst und in Objekte umgewandelt 
       while (rs.next()) {
           Beitrag b = new Beitrag();
           b.setId(rs.getInt("beitragID"));
@@ -179,7 +187,7 @@ public class BeitragMapper {
    */
   
   public Beitrag anlegen(Beitrag b) {
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -202,8 +210,8 @@ public class BeitragMapper {
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-            stmt.executeUpdate("INSERT INTO beitrag (beitragID, text, erstellungszeitpunkt) "
-                + "VALUES (" + b.getId() + ",'" + b.getBeitragstext() + "','"
+            stmt.executeUpdate("INSERT INTO beitrag (beitragID, nutzerID, text, erstellungszeitpunkt) "
+                + "VALUES (" + b.getId() + ", '" + b.getNutzerID() + "', '" + b.getBeitragstext() + "', '"
                 + b.getErstellungszeitpunkt() + "')");
           }
         }
@@ -211,77 +219,47 @@ public class BeitragMapper {
           e.printStackTrace();
         }
 
-        /*
-         * Rückgabe, des evtl. korrigierten Beitrags.
-         * 
-         * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-         * Objekte übergeben werden, wäre die Anpassung des Beitrag-Objekts auch
-         * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-         * explizite Rückgabe von b ist eher ein Stilmittel, um zu signalisieren,
-         * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-         */
         return b;
       }
 
   /**
-   * Wiederholtes Schreiben eines Objekts in die Datenbank.
+   * Änderung eines Objekts und Schreiben in die Datenbank.
    * 
    * @param b das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
-  public Beitrag aendern(Beitrag b) {
-    Connection con = DBConnectionLocal.connection();
+  public void aendern(Beitrag b) {
+    Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE beitrag " + "SET text=\""
-              + b.getBeitragstext()
-              + "WHERE beitragID=" + b.getId());
-      
+      stmt.executeUpdate("UPDATE beitrag " + "SET text='" + b.getBeitragstext() 
+              + "' WHERE beitragID=" + b.getId());
     }
     catch (SQLException e2) {
       e2.printStackTrace();
     }
-
-    // Um Analogie zu anlegen(Beitrag b) zu wahren, geben wir n zurück
-    return b;
   }
 
 
 
 /**
- * Löschen der Daten eines <code>Beitrag</code>-Objekts aus der Datenbank.
+ * Löschen eines <code>Beitrag</code>-Objekts aus der Datenbank.
  * 
  * @param b das aus der DB zu löschende "Objekt"
  */
 public void entfernen(Beitrag b) {
-  Connection con = DBConnectionLocal.connection();
+  Connection con = DBConnection.connection();
 
   try {
     Statement stmt = con.createStatement();
 
-    stmt.executeUpdate("DELETE FROM beitrag " + "WHERE beitragID=" + b.getId());
+    stmt.executeUpdate("DELETE FROM beitrag " + "WHERE beitragID= " + b.getId());
   }
   catch (SQLException e) {
     e.printStackTrace();
   }
-}
-
-
-public void liken(Like l) {
-	Connection con = DBConnectionLocal.connection();
-
-	   try {
-	      Statement stmt = con.createStatement();
-
-	// Jetzt erst erfolgt die tatsächliche Einfügeoperation
-	        stmt.executeUpdate("INSERT INTO beitrag (likeID)"
-	            + "VALUES (" + l.getId() + ")");
-	 }
-    catch (SQLException e) {
-      e.printStackTrace();
-    }
 }
 
 }

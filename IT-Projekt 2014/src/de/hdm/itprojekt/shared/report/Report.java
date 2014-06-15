@@ -27,7 +27,7 @@ private String titel = "";
 /**
  * Zeitpunkt zu dem der Bericht erstellt wurde
  */
-private Date erstellungszeit = null;
+private Date erstellungszeit = new Date(System.currentTimeMillis());
 
 /**
  * Auslesen der KopfDaten

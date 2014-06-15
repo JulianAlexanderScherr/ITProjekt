@@ -5,19 +5,23 @@ import java.util.Vector;
 
 import de.hdm.itprojekt.shared.bo.Beitrag;
 import de.hdm.itprojekt.shared.bo.Kommentar;
+import de.hdm.itprojekt.server.db.DBConnection;
 
 /**
- * Mapper-Klasse, die <code>Beitrag</code>-Objekte auf eine relationale
+ * Mapper-Klasse, die <code>Kommentar</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
- * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
+ * gestellt, mit deren Hilfe z.B. Objekte gesucht, angelegt, geändert und
  * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
+ * 
+ *  @author Thies, Schrempf, Scherr
  */
 public class KommentarMapper {
 
   /**
    * Die Klasse BeitragMapper wird nur einmal instantiiert. Man spricht hierbei
-   * von einem sogenannten <b>Singleton</b>.
+   * von einem sogenannten <b>Singleton</b>. Das Singleton ist also ein Entwurfstmuster welches sicherstellt,
+   * dass nur eine Instanz eines Objekts existiert.
    * <p>
    * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
    * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
@@ -61,14 +65,14 @@ public class KommentarMapper {
    */
   public Kommentar suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
       Statement stmt = con.createStatement();
 
       // Statement ausfüllen und als Query an die DB schicken
-      ResultSet rs = stmt.executeQuery("SELECT kommentarID, nutzerID, text, erstellungszeitpunkt FROM Kommentar "
+      ResultSet rs = stmt.executeQuery("SELECT kommentarID, beitragID, nutzerID, text, erstellungszeitpunkt FROM kommentar "
           + "WHERE kommentarID= " + id );
 
       /*
@@ -76,10 +80,12 @@ public class KommentarMapper {
        * werden. Prüfe, ob ein Ergebnis vorliegt.
        */
       if (rs.next()) {
-        // Ergebnis-Tupel in Objekt umwandeln
+    	// Datenbankergebnis wird als Ergebnis-Tupel zusammengefasst und in Objekt umgewandelt
         Kommentar k = new Kommentar();
         k.setId(rs.getInt("kommentarID"));
+        k.setBeitragID(rs.getInt("beitragID"));
         k.setNutzerID(rs.getInt("nutzerID"));
+        k.setKommentartext(rs.getString("text"));
         k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
         return k;
       }
@@ -92,9 +98,17 @@ public class KommentarMapper {
     return null;
   }
 
+  /**
+   * Auslesen aller Kommentare eines Beitrages.
+   * 
+   * @return Ein Vektor mit Kommentar-Objekten, die sämtliche Kommentare des gleichen Beitrages
+   *         repräsentieren. Bei evtl. Exceptions wird ein partiell gefüllter
+   *         oder ggf. auch leerer Vektor zurückgeliefert.
+   */
+  
   public Vector<Kommentar> suchenBeitrag(Beitrag b) {
 	    // DB-Verbindung holen
-	    Connection con = DBConnectionLocal.connection();
+	    Connection con = DBConnection.connection();
 
 	    //Ergebnisvektor vorbereiten
 	    Vector<Kommentar> result = new Vector <Kommentar>();
@@ -104,18 +118,16 @@ public class KommentarMapper {
 	      Statement stmt = con.createStatement();
 
 	      // Statement ausfüllen und als Query an die DB schicken
-	      ResultSet rs = stmt.executeQuery("SELECT kommentarID, nutzerID, text, erstellungszeitpunkt FROM Kommentar "
+	      ResultSet rs = stmt.executeQuery("SELECT kommentarID, nutzerID, text, erstellungszeitpunkt FROM kommentar "
 	          + "WHERE beitragID= " + b.getId() );
 
-	      /*
-	       * Da id Primärschlüssel ist, kann max. nur ein Tupel zurückgegeben
-	       * werden. Prüfe, ob ein Ergebnis vorliegt.
-	       */
-	      if (rs.next()) {
-	        // Ergebnis-Tupel in Objekt umwandeln
+
+	      while (rs.next()) {
+	    	// Datenbankergebnis wird als Ergebnis-Tupel zusammengefasst, und in Objekte umgewandelt 
 	        Kommentar k = new Kommentar();
 	        k.setId(rs.getInt("kommentarID"));
 	        k.setNutzerID(rs.getInt("nutzerID"));
+	        k.setKommentartext(rs.getString("text"));
 	        k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
 	        
 	        // Hinzufügen des neuen Objekts zum Ergebnisvektor
@@ -125,7 +137,7 @@ public class KommentarMapper {
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
-
+	    // Ergebnisvektor zurückgeben
 	    return result;
 	  }
   /**
@@ -136,7 +148,7 @@ public class KommentarMapper {
    *         oder ggf. auch leerer Vetor zurückgeliefert.
    */
   public Vector<Kommentar> suchenAlle() {
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
     // Ergebnisvektor vorbereiten
     Vector<Kommentar> result = new Vector<Kommentar>();
@@ -144,13 +156,14 @@ public class KommentarMapper {
     try {
       Statement stmt = con.createStatement();
 
-      ResultSet rs = stmt.executeQuery("SELECT kommentarID, nutzerID, text, erstellungszeitpunkt FROM beitrag "
+      ResultSet rs = stmt.executeQuery("SELECT kommentarID, beitragID, nutzerID, text, erstellungszeitpunkt FROM kommentar "
           + " ORDER BY erstellungszeitpunkt");
 
-      // Für jeden Eintrag im Suchergebnis wird nun ein Account-Objekt erstellt.
+      // Datenbankergebnis wird als Ergebnis-Tupel zusammengefasst und in Objekte umgewandelt 
       while (rs.next()) {
     	  Kommentar k = new Kommentar();
           k.setId(rs.getInt("kommentarID"));
+          k.setBeitragID(rs.getInt("beitragID"));
           k.setNutzerID(rs.getInt("nutzerID"));
           k.setKommentartext(rs.getString("text"));
           k.setErstellungszeitpunkt(rs.getTimestamp("erstellungszeitpunkt"));
@@ -179,7 +192,7 @@ public class KommentarMapper {
    */
   
   public Kommentar anlegen(Kommentar k) {
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -202,61 +215,50 @@ public class KommentarMapper {
             stmt = con.createStatement();
 
             // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-            stmt.executeUpdate("INSERT INTO kommentar (KommentarID, nutzerID, text, erstellungszeitpunkt) "
-                + "VALUES (" + k.getId() + ",'" + k.getKommentartext() + "','" + k.getNutzerID() + "','"
-                + k.getErstellungszeitpunkt() + "')");
+            stmt.executeUpdate("INSERT INTO kommentar (kommentarID, beitragID, nutzerID, text, erstellungszeitpunkt) "
+                + "VALUES (" + k.getId() + ",'" + k.getBeitragID() + "','" + k.getNutzerID() + "','" 
+            	+ k.getKommentartext() + "','" + k.getErstellungszeitpunkt() + "')");
           }
         }
         catch (SQLException e) {
           e.printStackTrace();
         }
 
-        /*
-         * Rückgabe, des evtl. korrigierten Kommentars.
-         * 
-         * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-         * Objekte übergeben werden, wäre die Anpassung des Beitrag-Objekts auch
-         * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-         * explizite Rückgabe von k ist eher ein Stilmittel, um zu signalisieren,
-         * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-         */
         return k;
       }
 
   /**
-   * Wiederholtes Schreiben eines Objekts in die Datenbank.
+   * Änderung eines Objekts und Schreiben in die Datenbank.
    * 
    * @param k das Objekt, das in die DB geschrieben werden soll
    * @return das als Parameter übergebene Objekt
    */
-  public Kommentar aendern(Kommentar k) {
-    Connection con = DBConnectionLocal.connection();
+  public void aendern(Kommentar k) {
+    Connection con = DBConnection.connection();
 
     try {
       Statement stmt = con.createStatement();
 
-      stmt.executeUpdate("UPDATE kommentar " + "SET text=\""
+      stmt.executeUpdate("UPDATE kommentar " + "SET text='"
               + k.getKommentartext()
-              + "WHERE kommentarID=" + k.getId());
+              + "' WHERE kommentarID=" + k.getId());
       
     }
     catch (SQLException e2) {
       e2.printStackTrace();
     }
-
-    // Um Analogie zu anlegen(Kommentar k) zu wahren, geben wir n zurück
-    return k;
   }
 
 
 
 /**
- * Löschen der Daten eines <code>Kommentar</code>-Objekts aus der Datenbank.
+ * Löschen eines <code>Kommentar</code>-Objekts mithilfe der KommentarID aus der Datenbank.
  * 
  * @param k das aus der DB zu löschende "Objekt"
  */
+  
 public void entfernen(Kommentar k) {
-  Connection con = DBConnectionLocal.connection();
+  Connection con = DBConnection.connection();
 
   try {
     Statement stmt = con.createStatement();
@@ -267,8 +269,15 @@ public void entfernen(Kommentar k) {
     e.printStackTrace();
   }
 }
+
+/**
+ * Löschen aller <code>Kommentar</code>-Objekte eines Beitrages aus der Datenbank.
+ * 
+ * @param k das aus der DB zu löschende "Objekt"
+ */
+
 public void entfernenKommentarVon(Beitrag b) {
-	  Connection con = DBConnectionLocal.connection();
+	  Connection con = DBConnection.connection();
 
 	  try {
 	    Statement stmt = con.createStatement();

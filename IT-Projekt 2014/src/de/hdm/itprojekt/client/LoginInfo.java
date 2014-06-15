@@ -2,6 +2,11 @@ package de.hdm.itprojekt.client;
 
 import java.io.Serializable;
 
+/**
+ * Methoden und Attribute zur Verwaltung der eingeloggten Nutzer 
+ * @author Schwab
+ *
+ */
 public class LoginInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;

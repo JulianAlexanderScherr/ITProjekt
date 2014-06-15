@@ -6,13 +6,13 @@ package de.hdm.itprojekt.shared.bo;
  * </br>
  * Ein Kommentar besteht aus einem Text und der Referenz zum Nutzer
  * </br>
- * Der Nutzer ist eine Fremdschlüsselbeziehung
+ * Der Nutzer ist eine Fremdschlï¿½sselbeziehung
  * @author Schwab
  */
 public class Kommentar extends BusinessObject {
 
 	/**
-	 * serialVersionUID wird benötigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
+	 * serialVersionUID wird benï¿½tigt um eine Art Version festzulegen um bei einer Deserialisierung den Wert der Variable zu vergleichen
 	 * </br>weitere Informationen zu Serializable siehe <a href="http://www.zdnet.de/39154667/wissenswertes-zur-serialisierung-von-java-objekten/">Link</a>
 	 */
 	private static final long serialVersionUID = 1L;
@@ -22,15 +22,18 @@ public class Kommentar extends BusinessObject {
 	 */
 	private String kommentartext = "";
 	
-	
 	/**
-	 * Fremdschlüsselbeziehung zu Nutzern
+	 * Fremdschlï¿½sselbeziehung zu Nutzern
 	 */
 	private int nutzerID = 0;
 
+	/**
+	 * FremdschlÃ¼sselbeziehung zu Beitrag 
+	 */
+	private int beitragID = 0;	
 	
 	/**
-	 * Auslesen des Fremdschlüssels der Kommentare
+	 * Auslesen des Fremdschlï¿½ssels der Kommentare
 	 * @return kommentartext
 	 */
 	public String getKommentartext() {
@@ -39,7 +42,7 @@ public class Kommentar extends BusinessObject {
 
 	
 	/**
-	 * Setzen des Fremdschlüssels der Kommentare
+	 * Setzen des Fremdschlï¿½ssels der Kommentare
 	 * @param kommentartext
 	 */
 	public void setKommentartext(String kommentartext) {
@@ -48,7 +51,7 @@ public class Kommentar extends BusinessObject {
 
 	
 	/**
-	 * Auslesen des Fremdschlüssels der Nutzer
+	 * Auslesen des Fremdschlï¿½ssels der Nutzer
 	 * @return nutzerID
 	 */
 	public int getNutzerID() {
@@ -57,7 +60,7 @@ public class Kommentar extends BusinessObject {
 
 	
 	/**
-	 * Setzen des Fremdschlüssels der Nutzer
+	 * Setzen des Fremdschlï¿½ssels der Nutzer
 	 * @param nutzerID
 	 */
 	public void setNutzerID(int nutzerID) {
@@ -66,10 +69,23 @@ public class Kommentar extends BusinessObject {
 	
 	
 	/**
-	 * Textuelle Repräsentation der relevanten Inhalte eines Kommentars
+	 * Textuelle Reprï¿½sentation der relevanten Inhalte eines Kommentars
 	 */
 	public String toString(){
-		return this.getKommentartext(); // Notwendigkeit überprüfen (Martin Schwab)
+		return this.getKommentartext(); // Notwendigkeit ï¿½berprï¿½fen (Martin Schwab)
+	}
+
+	/**
+	 * Auslesen des Fremdschlï¿½ssels der BeitrÃ¤ge
+	 * @return beitragID
+	 */
+	public int getBeitragID() {
+		return beitragID;
+	}
+
+
+	public void setBeitragID(int beitragID) {
+		this.beitragID = beitragID;
 	}
 	
 }

@@ -1,23 +1,24 @@
 package de.hdm.itprojekt.server.db;
 
 import java.sql.*;
-import java.util.Vector;
 
+import de.hdm.itprojekt.server.db.DBConnection;
 import de.hdm.itprojekt.shared.bo.Pinnwand;
 
 
 /**
  * Mapper-Klasse, die <code>Pinnwand</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
- * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * gestellt, mit deren Hilfe Objekte gesucht, und
+ * angelegt werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  */
 public class PinnwandMapper {
 
   /**
    * Die Klasse PinnwandMapper wird nur einmal instantiiert. Man spricht hierbei
-   * von einem sogenannten <b>Singleton</b>.
+   * von einem sogenannten <b>Singleton</b>. Das Singleton ist also ein Entwurfstmuster welches sicherstellt,
+   * dass nur eine Instanz eines Objekts existiert.  
    * <p>
    * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
    * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
@@ -53,7 +54,7 @@ public class PinnwandMapper {
 
   /**
    * Suchen einer Pinnwand mit vorgegebener pinnwandID. Da diese eindeutig ist,
-   * wird genau ein Objekt zur�ckgegeben.
+   * wird genau ein Objekt zurückgegeben.
    * 
    * @param id Primärschlüsselattribut (->DB)
    * @return Pinnwand-Objekt, das dem übergebenen Schlüssel entspricht, null bei
@@ -61,7 +62,7 @@ public class PinnwandMapper {
    */
   public Pinnwand suchenID(int id) {
     // DB-Verbindung holen
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
     try {
       // Leeres SQL-Statement (JDBC) anlegen
@@ -76,7 +77,7 @@ public class PinnwandMapper {
        * werden. Prüfe, ob ein Ergebnis vorliegt.
        */
       if (rs.next()) {
-        // Ergebnis-Tupel in Objekt umwandeln
+    	// Datenbankergebnis wird als Ergebnis-Tupel zusammengefasst und in Objekt umgewandelt
         Pinnwand p = new Pinnwand();
         p.setId(rs.getInt("pinnwandID"));
         return p;
@@ -103,7 +104,7 @@ public class PinnwandMapper {
    */
   
   public Pinnwand anlegen(Pinnwand p) {
-    Connection con = DBConnectionLocal.connection();
+    Connection con = DBConnection.connection();
 
         try {
           Statement stmt = con.createStatement();
@@ -112,40 +113,15 @@ public class PinnwandMapper {
            * Zunächst schauen wir nach, welches der momentan höchste
            * Primärschlüsselwert ist.
            */
-          ResultSet rs = stmt.executeQuery("SELECT MAX(pinnwandID) AS maxid "
-              + "FROM pinnwand ");
+          stmt = con.createStatement();
 
-          // Wenn wir etwas zurückerhalten, kann dies nur einzeilig sein
-          if (rs.next()) {
-            /*
-             * c erhält den bisher maximalen, nun um 1 inkrementierten
-             * Primärschlüssel.
-             */
-            p.setId(rs.getInt("PinnwandID") + 1);
-
-            stmt = con.createStatement();
-
-            // Jetzt erst erfolgt die tatsächliche Einfügeoperation
-            stmt.executeUpdate("INSERT INTO pinnwand (pinnwandID) "
-                + "VALUES (" + p.getId() + ")");
-          }
+          // Jetzt erst erfolgt die tatsächliche Einfügeoperation
+          stmt.executeUpdate("INSERT INTO pinnwand (pinnwandID) "
+              + "VALUES (" + p.getId() + ")");
         }
         catch (SQLException e) {
           e.printStackTrace();
         }
-
-        /*
-         * Rückgabe, des evtl. korrigierten Pinnwand.
-         * 
-         * HINWEIS: Da in Java nur Referenzen auf Objekte und keine physischen
-         * Objekte übergeben werden, wäre die Anpassung des Nutzer-Objekts auch
-         * ohne diese explizite Rückgabe au�erhalb dieser Methode sichtbar. Die
-         * explizite Rückgabe von n ist eher ein Stilmittel, um zu signalisieren,
-         * dass sich das Objekt evtl. im Laufe der Methode verändert hat.
-         */
         return p;
       }
-
-  
-
 }

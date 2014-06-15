@@ -2,6 +2,8 @@ package de.hdm.itprojekt.shared;
 
 
 
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.itprojekt.shared.bo.Nutzer;
@@ -18,11 +20,12 @@ public interface ReportGeneratorAsync {
 
 	void init(AsyncCallback<Void> callback);
 
-	void createMehrereBeitraegeReport(Nutzer n,
-			AsyncCallback<MehrereBeitraegeReport> callback);
+	void createMehrereBeitraegeReport(Date az, Date ez, Nutzer n,
+			String auswahl, AsyncCallback<MehrereBeitraegeReport> callback);
 
 	
 
-	void createMehrnutzerReport(AsyncCallback<MehrnutzerReport> callback);
+	void createMehrnutzerReport(Date az, Date ez, String auswahl,
+			AsyncCallback<MehrnutzerReport> callback);
 
 }

@@ -14,7 +14,7 @@ import de.hdm.itprojekt.shared.bo.Pinnwand;
 
 /**
  * Asynchrone KLasse von {@link Verwaltungsklasse}.
- * F�r die GWT RPC (Remote Procedure Call) wird ein synchrones und ein asynchrones Interface 
+ * Für die GWT RPC (Remote Procedure Call) wird ein synchrones und ein asynchrones Interface 
  * ben�tigt um zwischen Client und Server kommunizieren zu k�nnen 
  * </br>
  * Weitere Informationen zu GWT RPC (recht einfache Erkl�rung): Theorie: https://www.youtube.com/watch?v=9FZt7EbMp_E#t=439
@@ -27,13 +27,11 @@ public interface VerwaltungsklasseAsync {
 
 	void init(AsyncCallback<Void> callback);
 
-	void setPinnwand(Nutzer nutzer, AsyncCallback<Void> callback);
+	void createKommentar(Kommentar k, AsyncCallback<Void> callback);
 
-	void setKommentar(String text, Beitrag beitrag, AsyncCallback<Void> callback);
-
-	void setBeitrag(String text, AsyncCallback<Void> callback);
+	void createBeitrag(Beitrag b, AsyncCallback<Void> callback);
 	
-	void setAbonnement(Abonnement abonnement, AsyncCallback<Void> callback);
+	void createAbonnement(Abonnement abonnement, AsyncCallback<Void> callback);
 
 	void loeschenBeitrag(Beitrag beitrag, AsyncCallback<Void> callback);
 	
@@ -75,5 +73,30 @@ public interface VerwaltungsklasseAsync {
 			AsyncCallback<Vector<Kommentar>> callback);
 
 	void getLikeByBeitrag(Beitrag b, AsyncCallback<Vector<Like>> callback);
+
+	void createNutzer(Nutzer nutzer, AsyncCallback<Void> callback);
+
+	void updateBeitrag(Beitrag b, AsyncCallback<Void> callback);
+
+	void updateNutzer(Nutzer n, AsyncCallback<Void> callback);
+
+	void loeschenAbonnement(int pID, int nID, AsyncCallback<Void> callback);
+
+	void sortBeitraege(Vector<Beitrag> vb,
+			AsyncCallback<Vector<Beitrag>> callback);
+
+	void checkEmail(String mail, AsyncCallback<Nutzer> callback);
+
+	void updateKommentar(Kommentar k, AsyncCallback<Void> callback);
+
+	void getCurrentUserMail(AsyncCallback<String> callback);
+
+	void getAbonnementByNutzer(Nutzer n,
+			AsyncCallback<Vector<Abonnement>> callback);
+
+	void getAlleBeitraegeByNutzer(Nutzer n,
+			AsyncCallback<Vector<Beitrag>> callback);
+
+	void getAbonnementNutzer(Nutzer n, AsyncCallback<Vector<Nutzer>> callback);
 
 }

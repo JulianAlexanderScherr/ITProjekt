@@ -12,7 +12,7 @@ import de.hdm.itprojekt.shared.Verwaltungsklasse;
 import de.hdm.itprojekt.shared.VerwaltungsklasseAsync;
 
 /**
- * Klasse mit Eigenschaften und Diensten, die f�r alle Client-seitigen Klassen
+ * Klasse mit Eigenschaften und Diensten, die für alle Client-seitigen Klassen
  * relevant sind.
  * @author Thies, Schwab
  *
@@ -65,15 +65,15 @@ public class ClientsideSettings extends CommonSettings {
 	   * <h2>HINWEIS:</h2>
 	   * <p>
 	   * Beachten Sie, dass Sie den auszugebenden Log nun nicht mehr durch
-	   * bedarfsweise Einf�gen und Auskommentieren etwa von
-	   * <code>System.out.println(...);</code> steuern. Sie belassen k�nftig
-	   * s�mtliches Logging im Code und k�nnen ohne abermaliges Kompilieren den Log
-	   * Level "von au�en" durch die Datei <code>logging.properties</code> steuern.
+	   * bedarfsweise Einfügen und Auskommentieren etwa von
+	   * <code>System.out.println(...);</code> steuern. Sie belassen künftig
+	   * sämtliches Logging im Code und können ohne abermaliges Kompilieren den Log
+	   * Level "von außen" durch die Datei <code>logging.properties</code> steuern.
 	   * Sie finden diese Datei in Ihrem <code>war/WEB-INF</code>-Ordner. Der dort
-	   * standardm��ig vorgegebene Log Level ist <code>WARN</code>. Dies w�rde
+	   * standardmäßig vorgegebene Log Level ist <code>WARN</code>. Dies w�rde
 	   * bedeuten, dass Sie keine <code>INFO</code>-Meldungen wohl aber
 	   * <code>WARN</code>- und <code>SEVERE</code>-Meldungen erhielten. Wenn Sie
-	   * also auch Log des Levels <code>INFO</code> wollten, m�ssten Sie in dieser
+	   * also auch Log des Levels <code>INFO</code> wollten, müssten Sie in dieser
 	   * Datei <code>.level = INFO</code> setzen.
 	   * </p>
 	   * 

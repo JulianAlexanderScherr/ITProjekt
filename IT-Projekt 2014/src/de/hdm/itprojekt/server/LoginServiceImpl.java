@@ -3,10 +3,17 @@ package de.hdm.itprojekt.server;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+
 import de.hdm.itprojekt.client.LoginInfo;
-import de.hdm.itprojekt.client.LoginService;
+import de.hdm.itprojekt.shared.LoginService;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+/**
+ * Implementationsklasse des Nutzer Login Service
+ * @author Schwab
+ *
+ */
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
 
 

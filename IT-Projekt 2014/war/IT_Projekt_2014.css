@@ -1,244 +1,498 @@
-a.signInLink {
-    background: #32849B;
-    border-radius: 5px;
-    color: #FFFFFF !important;
-    font-size: 16px;
-    padding: 10px 20px;
-    border: 1px solid #32849B;
+a.signInLink, .loginPanel button{
+	background: #32849B;
+	border-radius: 5px;
+	color: #FFFFFF !important;
+	font-size: 16px;
+	padding: 10px 20px;
+	border: 1px solid #32849B;
 }
 
-a.signInLink:hover {
-    background: #fff;
-    border-radius: 3px;
-    color: #32849B !important;
-    text-decoration: none;
+a.signInLink:hover, .loginPanel button:hover{
+	background: #fff;
+	border-radius: 3px;
+	color: #32849B !important;
+	text-decoration: none;
 }
 
 body {
-    background: url("images/triangular.png") repeat !important;
-    margin: 0 !important;
+	background: url("images/triangular.png") repeat !important;
+	margin: 0 !important;
+}
+
+.beitragKommentieren {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: medium none;
+	cursor: pointer;
+	float: right;
+	font-size: 11px;
+	margin-bottom: 20px;
+}
+
+.beitragKommentieren:hover {
+	text-decoration: underline;
 }
 
 .basisPanel {
-    width: 100%;
+	width: 100%;
+}
+
+.aendernButton {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: medium none;
+	cursor: pointer;
+	font-size: 12px;
+	margin-bottom: 20px;
+}
+
+.aendernButton:hover {
+	text-decoration: underline;
 }
 
 .beitragsPanel {
-    border: 1px solid #A0A0A0;
-    margin-left: 10px;
-    padding: 20px;
-    width: 599px;
+	border: 1px solid #A0A0A0;
+	margin-left: 10px;
+	padding: 20px;
+	width: 599px;
 }
 
-.beitragsPanel .section_pinnwand{
+.beitragsPanel .section_pinnwand {
 	background: none repeat scroll 0 0 #FFFFFF;
-    margin-top: -34px;
-    padding: 5px;
-    width: 57px;
+	margin-top: -34px;
+	padding: 5px;
+	width: 57px;
 }
 
 .beitragsPanel .gwt-Button.neuerBeitrag {
-    float: right;
+	float: right;
+}
+
+.beitragsPanel table {
+	float: right;
+}
+
+.beitragsText {
+	border-bottom: 1px solid #9A9A9A;
+	color: #000000;
+	font-size: 14px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	padding-bottom: 10px;
 }
 
 #body_smp {
-    border-radius: 5px 5px 0 0;
-    padding: 20px;
+	border-radius: 5px 5px 0 0;
+	padding: 20px;
+}
+
+.buttonLabel .gwt-Button {
+	background: #32849B;
+	border: 1px solid #32849B;
+	color: #FFFFFF;
+	padding: 2px 10px;
+}
+
+.buttonLabel .gwt-Button:hover {
+	background: #fff;
+	border: 1px solid #32849B;
+	color: #32849B;
+	padding: 2px 10px;
+}
+
+.cellList {
+    background: none repeat scroll 0 0 #F0F0F0;
+    height: auto;
+    margin-top: 10px;
+    max-height: 400px;
+    overflow: auto;
+    width: 303px;
+}
+
+.cellList div div div {
+	padding: 10px;
+}
+
+.cellList div div div:selection {
+	padding: 20px;
+}
+
+.einzelBeitragsPanel {
+	border-radius: 5px;
+	box-shadow: 0 0 6px #919191;
+	color: #5A5A5A;
+	margin-top: 30px;
+	padding: 10px 20px;
+	width: 500px;
+}
+
+.einzelBeitragsPanel .funktionenPanel button {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: medium none;
+	color: #32849B;
+	float: right;
+	font-size: 11px;
+	margin-left: 2px;
+	margin-right: 2px;
+	padding: 0;
+}
+
+.einzelBeitragsPanel .funktionenPanel button:hover{
+	border: none;
 }
 
 #footer {
-    background: url("images/triangular_blue.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
-    border-radius: 0 0 5px 5px;
-    color: #FFFFFF;
-    padding: 10px 20px;
+	background: url("images/triangular_blue.png") repeat scroll 0 0
+		rgba(0, 0, 0, 0);
+	border-radius: 0 0 5px 5px;
+	color: #FFFFFF;
+	padding: 10px 20px;
 }
 
-.head_text{
+.funktionenPanel {
+	width: 100%;
+}
+
+.GPBYFDEEB.suchenNamen {
+    background: none repeat scroll 0 0 #F0F0F0;
+    margin-top: 10px;
+    max-height: 116px;
+    overflow: auto;
+    width: 302px;
+}
+
+.GPBYFDEEB.suchenNamen div div {
+    padding: 5px;
+}
+
+.gwt-Button.abonnieren {
+    background: none repeat scroll 0 0 #32849B;
+    border: 1px solid #32849B;
+    border-radius: 5px;
+    color: #FFFFFF;
+    float: right;
+}
+
+.gwt-Button.abonnieren:hover, .beitragsPanel .gwt-Button.neuerBeitrag:hover{
+    background: #fff;
+    color: #32849B;
+}
+
+.head_text {
 	color: #32849B;
 	text-transform: uppercase;
 	font-size: 14px;
 }
 
-#header{
-	width: 100%;
-	position: fixed;
-	background: #32849b;
-	top: 0;
+#header {
+	background: none repeat scroll 0 0 #32849B;
 	height: 75px;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10;
 }
 
 .icon {
     float: right;
-    margin-top: -80px;
+    margin-top: -280px;
+}
+
+.informationsPanel .datum,.informationsPanel .uhrzeit {
+	clear: right;
+	float: right;
+}
+
+.informationsPanel .nutzerName {
+	float: left;
+}
+
+.kommentarPanel table {
+	margin-top: 5px;
+	width: 350px;
+}
+
+.likes {
+    width: 137px !important;
 }
 
 .loginPanel {
-    padding: 30px;
-    width: 100%;
+	padding: 30px;
+	width: 100%;
+}
+
+.loginPanel button {
+    margin-top: 10px;
+    opacity: 0.5;
+    padding: 5px;
 }
 
 .loginText {
-    font-family: open sans,sans-serif;
-    font-size: 14px;
-    padding-bottom: 20px;
-    width: 390px;
+	font-family: open sans, sans-serif;
+	font-size: 14px;
+	padding-bottom: 20px;
+	width: 390px;
 }
 
 .logo {
-    margin: 11px auto auto;
-    width: 1000px;
+	margin: 11px auto auto;
+	width: 1000px;
 }
 
-.logo .hdm{
+.logo .hdm {
 	float: right;
-    margin-top: 13px;
+	margin-top: 13px;
+}
+
+.meineAbos {
+    border-bottom: 1px solid #9A9A9A;
+    font-size: 15px;
+    margin-top: 60px;
+    padding-bottom: 5px;
 }
 
 .menue {
-    margin-left: 380px;
-    margin-top: -83px;
-    position: fixed;
-    width: 500px;
+	margin-left: 350px;
+	margin-top: -83px;
+	position: fixed;
+	width: 500px;
+	z-index: 20;
 }
 
-.menue td .gwt-Button, .menue a.logout{
-	background: none;
-	border: none;
-	color: #fff;
-	text-transform: uppercase;
-	margin-right: -95px;
-	padding: 5px 7px;
+.menue td .gwt-Button,.menue a.logout, .zumLogin {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: medium none;
 	border-radius: 3px;
+	color: #FFFFFF;
+	margin-right: 0;
+	padding: 5px 7px;
+	text-transform: uppercase;
 }
 
 .menue a.logout {
-    margin-left: -160px;
+    margin-left: 30px;
     position: absolute;
-    margin-top: 1px;
 }
 
-.menue td .gwt-Button:hover, .menue a.logout:hover{
+.menue td {
+	width: 500px;
+}
+
+.menue td .gwt-Button:hover,.menue a.logout:hover, .zumLogin:hover {
 	background: #fff;
 	color: #32849B;
 	text-decoration: none;
 }
 
+.neuerBeitragPanel button {
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border: medium none;
+	cursor: pointer;
+	font-size: 12px;
+}
+
+.neuerBeitragPanel button:hover {
+	text-decoration: underline;
+}
+
+.neuerBeitragPanel textarea {
+	max-width: 500px;
+	min-width: 100px;
+	width: 500px;
+}
+
+.nVerwaltung {
+	color: #32849B;
+	font-size: 19px;
+	margin-bottom: 40px;
+}
+
+.reportText {
+    border-top: 1px solid #D0D0D0;
+    margin-top: 60px;
+    opacity: 0.5;
+    padding-right: 20px;
+    padding-top: 40px;
+    width: 390px;
+}
+
 .sendButton {
-  display: block;
-  font-size: 16pt;
+	display: block;
+	font-size: 16pt;
 }
 
 .suchenPanel .gwt-SuggestBox {
-    margin-left: 10px;
-    margin-top: -4px;
-    width: 195px;
+	margin-left: 10px;
+	margin-top: -4px;
+	width: 195px;
+}
+
+textarea {
+	border: 1px solid #808080 !important;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	margin-top: 10px;
+	max-width: 490px;
+	width: 350px;
+}
+
+.textBoxes .gwt-TextBox {
+	border-radius: 5px;
+	margin-bottom: 20px;
+	margin-left: 20px;
+	width: 210px;
+}
+
+.textLabels .gwt-Label {
+	margin-bottom: 28px;
+	margin-top: 4px;
+}
+
+.textPanel {
+	width: 100%;
 }
 
 .verwaltungsPanel {
-    border: 1px solid #A0A0A0;
-    padding: 20px;
-    width: 350px;
+	border: 1px solid #A0A0A0;
+	padding: 20px;
+	width: 350px;
 }
 
 .verwaltungsPanel .section_abonnenten {
-    background: none repeat scroll 0 0 #FFFFFF;
-    margin-top: -34px;
-    padding: 5px;
-    width: 67px;
+	background: none repeat scroll 0 0 #FFFFFF;
+	margin-top: -34px;
+	padding: 5px;
+	width: 67px;
 }
 
-.verwaltungsPanel .gwt-Button, .beitragsPanel .gwt-Button.neuerBeitrag, .reportMenuePanel .gwt-Button.erstellenReport {
-    background: #32849B;
+.verwaltungsPanel .gwt-Button,.beitragsPanel .gwt-Button.neuerBeitrag, .reportMenuePanel .gwt-Button.erstellenReport
+	{
+	background: none repeat scroll 0 0 #32849B;
+    border: 1px solid #32849B;
     color: #FFFFFF;
-    border: none;
     padding: 1px 5px;
 }
 
 .verwaltungsPanel .gwt-TextBox {
-    border-radius: 3px;
-    margin-left: 10px;
-    margin-top: -4px;
-    padding: 4px 5px;
-    width: 193px;
+	border-radius: 3px;
+	margin-left: 10px;
+	margin-top: -4px;
+	padding: 4px 5px;
+	width: 193px;
+}
+
+.verwaltungsPanel .gwt-button {
+	margin-top: 20px;
+}
+
+.zumLogin {
+    cursor: pointer;
+    float: right;
+    margin-left: 730px;
+    margin-top: -83px;
+    position: fixed;
+    z-index: 20;
 }
 
 .reportMenuePanel {
-    border: 1px solid #A0A0A0;
-    padding: 20px;
-    width: 350px;
-}
-
-.reportAusgabePanel {
-    border: 1px solid #A0A0A0;
-    margin-left: 10px;
-    padding: 20px;
-    width: 599px;
+	border: 1px solid #A0A0A0;
+	padding: 20px;
+	width: 350px;
 }
 
 .reportMenuePanel .report {
     background: none repeat scroll 0 0 #FFFFFF;
+    font-size: 13px !important;
     margin-top: -34px;
     padding: 5px;
-    width: 37px;
+    width: 87px;
+}
+
+.reportMenuePanel .gwt-ListBox {
+    background: none repeat scroll 0 0 #F1F1F1;
+    height: 34px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.reportMenuePanel .gwt-RadioButton > input{
+    float: left;
+    height: 40px;
+}
+
+.reportMenuePanel .gwt-RadioButton > label {
+    float: left;
+    padding: 13px;
+}
+
+.reportMenuePanel .gwt-Label {
+    font-size: 14px;
+}
+
+.reportMenuePanel .cellList {
+    height: auto;
+    margin-bottom: 20px;
+    margin-top: 0;
+    max-height: 150px;
+}
+
+.gwt-Button.erstellenReport {
+    margin-top: 20px;
+    padding: 7px !important;
+}
+
+.gwt-Button.erstellenReport:hover {
+    background: #fff;
+    color: #32849B;
 }
 
 #wrapper {
 	background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 4px #606060;
-    margin: 85px auto auto;
-    width: 1000px;
-    opacity: 1.0 !important; 
+	border-radius: 5px;
+	box-shadow: 0 0 4px #606060;
+	margin: 85px auto auto;
+	width: 1000px;
+	opacity: 1.0 !important;
 }
 
 h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: blue;
-  margin: 40px 0px 70px;
-  text-align: center;
+	font-size: 2em;
+	font-weight: bold;
+	color: blue;
+	margin: 40px 0px 70px;
+	text-align: center;
 }
 
 .gwt-ListBox {
-    border: medium none;
-    margin-top: 20px;
-    width: 303px;
+	border: medium none;
+	margin-top: 20px;
+	width: 303px;
 }
-
-.listBoxReport{
-    border: 1px solid #A0A0A0;
-    margin-top: 20px;
-    width: 170px;
-}
-
 
 .gwt-ListBox option {
-    cursor: pointer;
-    padding: 10px;
+	cursor: pointer;
+	padding: 10px;
 }
 
 .gwt-ListBox option.active {
-    background: red;
+	background: red;
 }
-
 /** Most GWT widgets already have a style name defined */
 .gwt-Button:active {
-    border: none !important;
+	border: none !important;
 }
 
 .gwt-DialogBox {
-  width: 400px;
+	width: 400px;
 }
 
 .dialogVPanel {
-  margin: 5px;
+	margin: 5px;
 }
 
 .serverResponseLabelError {
-  color: red;
+	color: red;
 }
-
 /** Set ids using widget.getElement().setId("idOfElement") */
 #closeButton {
-  margin: 15px 6px 6px;
+	margin: 15px 6px 6px;
 }

@@ -31,6 +31,17 @@
       <url-pattern>/it_projekt_2014/reportgenerator</url-pattern>
   </servlet-mapping>
   
+    
+  <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>user</web-resource-name>
+            <url-pattern>/it_projekt_2014/</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>IT_Projekt_2014.html</welcome-file>
@@ -49,5 +60,6 @@
     <servlet-name>systemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
+
 
 </web-app>
